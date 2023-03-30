@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wazefaa/widgets/reusable_company_card.dart';
-
+import 'package:flutter_html/flutter_html.dart';
 import '../consts/colors.dart';
 
 class CompanyDetails extends StatelessWidget {
@@ -9,7 +9,7 @@ class CompanyDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args =
-    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -25,25 +25,31 @@ class CompanyDetails extends StatelessWidget {
         ),
       ),
       body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(15,10,15,0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ReusableCompanyCard(infoMap: args!,isWeInDetailsPage: true),
-              SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: Text(args['description'], style:const TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),)),
-              Text(args['jop'], style:const TextStyle(color: Colors.black),),
-              const Text('المؤهلات المطلوبة:', style: TextStyle(fontSize: 16,color: Colors.black,fontWeight: FontWeight.bold),),
-              Container(
-                  padding:const EdgeInsets.fromLTRB(15,15,15,0),
-                  child: Text(args['Qualification'], style:const TextStyle(fontSize:13,color: Colors.black),)),
-            ],
-          ),
-        ),
-      ),
+          textDirection: TextDirection.rtl,
+          child: Container(
+              padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ReusableCompanyCard(
+                        id: args!['id'],
+                        title: args['title'],
+                        content: args['content'],
+                        rating: args['rating'],
+                        review: args['review'],
+                        jobsCount: args['jobsCount'],
+                        logo: args['logo'],
+                        isWeInDetailsPage: true),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(15, 10, 10, 10),
+                      child: Html(
+                        data: args['content'],
+                      ),
+                    ),
+                  ],
+                ),
+              ))),
     );
   }
 }

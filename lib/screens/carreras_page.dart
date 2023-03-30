@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wazefaa/backend/get_jobs.dart';
 import '../consts/colors.dart';
-import '../consts/jops_type_list.dart';
+import '../consts/jobs_type_list.dart';
 import '../widgets/reusable_career_card.dart';
 
 class CarrerasPage extends StatefulWidget {
@@ -11,62 +12,51 @@ class CarrerasPage extends StatefulWidget {
 }
 
 class _CarrerasPageState extends State<CarrerasPage> {
-  List carrerasList=[
-    {
-      'logo':'assets/images/logo_circle.png',
-      'description':'وظائف شاغرة في أبو ظبي لكافة الجنسيات برواتب مجزية',
-      'country':'الإمارات العربية المتحدة' ,
-      'company':'HDL Express شركة',
-      'views':'22',
-      'location':'وظائف اليوم في السعودية لدى Atlas Copco في جدة 16/2/2023 ',
-      'jop_name':'مهندس مبيعات',
-      'Qualification':[
-        'يجب ان يتقن اللغة الانكليزية(مستوى ممتاز)',
-        'يجب ان يتقن العمل على الحاسوب ويتقن استخجام ادوات مايكروسوفت واوفيس',
-        'يجب ان يتقن اللغة الانكليزية',
-        'يفضل أن يجيد اللغة العربية',
-        'يفضل أن يمتلك خلفية فنية وهندسية جيدة',
-        'يفضل أن يكون حاصل على درجة هندسة ميكانيكية او ما يعادلها في المجال',
-        'الإلمام والخبرة في التعامل والتفاوض بشأن الشروط والاحكام التجارية',
-      ]
-    },
-    {
-      'logo':'assets/images/logo_circle.png',
-      'description':'وظائف شاغرة في أبو ظبي لكافة الجنسيات برواتب مجزية',
-      'country':'الإمارات العربية المتحدة' ,
-      'company':'HDL Express شركة',
-      'views':'22',
-      'location':'وظائف اليوم في السعودية لدى Atlas Copco في جدة 16/2/2023 ',
-      'jop_name':'مهندس مبيعات',
-      'Qualification':[
-        'يجب ان يتقن اللغة الانكليزية(مستوى ممتاز)',
-        'يجب ان يتقن العمل على الحاسوب ويتقن استخجام ادوات مايكروسوفت واوفيس',
-        'يجب ان يتقن اللغة الانكليزية',
-        'يفضل أن يجيد اللغة العربية',
-        'يفضل أن يمتلك خلفية فنية وهندسية جيدة',
-        'يفضل أن يكون حاصل على درجة هندسة ميكانيكية او ما يعادلها في المجال',
-        'الإلمام والخبرة في التعامل والتفاوض بشأن الشروط والاحكام التجارية',
-      ]
-    },
-    {
-      'logo':'assets/images/logo_circle.png',
-      'description':'وظائف شاغرة في أبو ظبي لكافة الجنسيات برواتب مجزية',
-      'country':'الإمارات العربية المتحدة' ,
-      'company':'HDL Express شركة',
-      'views':'22',
-      'location':'وظائف اليوم في السعودية لدى Atlas Copco في جدة 16/2/2023 ',
-      'jop_name':'مهندس مبيعات',
-      'Qualification':[
-        'يجب ان يتقن اللغة الانكليزية(مستوى ممتاز)',
-        'يجب ان يتقن العمل على الحاسوب ويتقن استخجام ادوات مايكروسوفت واوفيس',
-        'يجب ان يتقن اللغة الانكليزية',
-        'يفضل أن يجيد اللغة العربية',
-        'يفضل أن يمتلك خلفية فنية وهندسية جيدة',
-        'يفضل أن يكون حاصل على درجة هندسة ميكانيكية او ما يعادلها في المجال',
-        'الإلمام والخبرة في التعامل والتفاوض بشأن الشروط والاحكام التجارية',
-      ]
+  List carrerasList=[];
+  //todo:make carrerasByCountryList empty after choosing country
+  String typeSelected='';
+  int from = 0;
+  int length = 10;
+  bool isLoadMore = false;
+  bool isDataFetched = false;
+  ScrollController scrollController = ScrollController();
+  fetchData() async {
+    var p;
+    if(typeSelected.isNotEmpty) {
+      p = await getJobsByCCT('', '', typeSelected, '', from, length);
+    }else{
+      p= await getAllJobs(from, length);
     }
-  ];
+    carrerasList.addAll(p);
+    scrollController.addListener(() async {
+      if (isLoadMore) return;
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        setState(() async {
+          isLoadMore = true;
+          from = from + length;
+          if(typeSelected.isNotEmpty) {
+            p = await getJobsByCCT('', '', typeSelected, '', from, length);
+          }else{
+            p= await getAllJobs(from, length);
+          }
+          carrerasList.addAll(p);
+          setState(() {
+            isLoadMore = false;
+          });
+        });
+      }
+    });
+    setState(() {
+      isDataFetched = true;
+    });
+  }
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,15 +107,51 @@ class _CarrerasPageState extends State<CarrerasPage> {
                     ),
                   ),
                 ),
-                SizedBox(
-                    height: MediaQuery.of(context).size.height*0.70,
-                    child: ListView.builder(
-                      itemCount: carrerasList.length,
-                      itemBuilder: (context, index) => ReusableCareerCard(
-                        infoMap: carrerasList[index],
-                        isWeInDetailsPage: false,
-                      ),
-                    ))
+                isDataFetched
+                    ?SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.70,
+                  child: ListView.builder(
+                      controller: scrollController,
+                      itemCount: isLoadMore
+                          ? carrerasList.length + 1
+                          : carrerasList.length,
+                      itemBuilder: (context, index) {
+                        if (index >= carrerasList.length) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          var id = carrerasList[index]['ID'];
+                          var title = carrerasList[index]['post_title'];
+                          var content = carrerasList[index]['post_content'];
+                          var company = carrerasList[index]['company'];
+                          var location = '', views = '';
+                          for (int i = 0; i < carrerasList[index]['Array'].length; i++) {
+                            if (carrerasList[index]['Array'][i]['meta_key']=='_location') {
+                              location =
+                              carrerasList[index]['Array'][i]['meta_value'];
+                            }
+                            if (carrerasList[index]['Array'][i]['meta_key']=='_noo_views_count') {
+                              views =
+                              carrerasList[index]['Array'][i]['meta_value'];
+                            }
+                          }
+                          return ReusableCareerCard(
+                            isWeInDetailsPage: false,
+                            id: id,
+                            title: title,
+                            location: location,
+                            views: views,
+                            content: content,
+                            company: company,
+                            logo: 'assets/images/logo_circle.png',
+                          );
+                        }
+                      }),
+                )
+                    : const Center(
+                  child: CircularProgressIndicator(),
+                ),
               ],
             ),
           ),
@@ -134,7 +160,7 @@ class _CarrerasPageState extends State<CarrerasPage> {
     );
   }
 
- String typeSelected='';
+
   SizedBox _buildBottomSheetForCarreras(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.4,
@@ -175,7 +201,6 @@ class _CarrerasPageState extends State<CarrerasPage> {
                     onChanged: (value) {
                       setState(() {
                         typeSelected = value;
-                        print(typeSelected);
                       });
                     },
                   ),

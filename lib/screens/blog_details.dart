@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import '../consts/colors.dart';
 
@@ -23,22 +24,14 @@ class BlogDetails extends StatelessWidget {
           ),
         ),
       ),
-      body: Directionality(
+      body:  Directionality(
         textDirection: TextDirection.rtl,
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(15,10,15,0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: Text(args!['description'], style:const TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),)),
-              Text(args['jop'], style:const TextStyle(color: Colors.black),),
-              const Text('المؤهلات المطلوبة:', style: TextStyle(fontSize: 16,color: Colors.black,fontWeight: FontWeight.bold),),
-              Container(
-                  padding:const EdgeInsets.fromLTRB(15,15,15,0),
-                  child: Text(args['Qualification'], style:const TextStyle(fontSize:13,color: Colors.black),)),
-            ],
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(15,10,15,0),
+            child:  Html(
+              data: args!['content'],
+            ),
           ),
         ),
       ),

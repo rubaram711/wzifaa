@@ -4,10 +4,14 @@ import 'package:wazefaa/consts/colors.dart';
 
 class ReusablePostCard extends StatelessWidget {
   const ReusablePostCard({
-    Key? key,
-    required this.infoMap,
+    Key? key, required this.id, required this.title, required this.authorName, required this.content, required this.image,
+
   }) : super(key: key);
-  final Map infoMap;
+  final String id;
+  final String title;
+  final String authorName;
+  final String content;
+  final String image;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +26,7 @@ class ReusablePostCard extends StatelessWidget {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
             child: Text(
-              infoMap['title'],
+              title,
               style: const TextStyle(color: kThirdColor, fontSize: 15,fontWeight: FontWeight.bold),
             ),
           ),
@@ -35,14 +39,14 @@ class ReusablePostCard extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
-                Text(infoMap['short_title'])
+                Text(authorName)
               ],),
               Row(children: [
                 Icon(Icons.calendar_month,size: 17,color: Colors.grey[700],),
                 const SizedBox(
                   width: 5,
                 ),
-                Text(infoMap['date'])
+                const Text('14 فبراير 2023')
               ],)
             ],
           ),
@@ -54,7 +58,7 @@ class ReusablePostCard extends StatelessWidget {
             width: MediaQuery.of(context).size.width*0.83,
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
-                child: Image.asset(infoMap['image'],fit: BoxFit.cover,)),
+                child: Image.asset(image ,fit: BoxFit.cover,)),
           ),
          // Image.asset(infoMap['image'],height: MediaQuery.of(context).size.height*0.3,),
           const SizedBox(
@@ -62,7 +66,9 @@ class ReusablePostCard extends StatelessWidget {
           ),
           SizedBox(
               width: MediaQuery.of(context).size.width * 0.80,
-              child: Text(infoMap['text'])),
+              child:Text(removeAllHtmlTags(content).substring(0,250))
+              //Html(data:content.substring(0,200) ,)
+          ),
           const SizedBox(
             height: 5,
           ),
@@ -82,13 +88,18 @@ class ReusablePostCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 5,),
                   Text(
-                    '${infoMap['comments_count']} تعليقات ',
+                    '5 تعليقات',
                     style: TextStyle(color: Colors.grey[700],fontSize: 15),),
                 ],
               ),
               InkWell(
                 onTap: (){
-                  Navigator.pushNamed(context, '/blog_details',arguments: infoMap);
+                  Navigator.pushNamed(context, '/blog_details',arguments: {
+                    'id': id,
+                    'title': title,
+                    'authorName': authorName,
+                    'content': content,
+                  });
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 3),
@@ -105,4 +116,15 @@ class ReusablePostCard extends StatelessWidget {
       ),
     );
   }
+}
+
+
+String removeAllHtmlTags(String htmlText) {
+  RegExp exp = RegExp(
+      r'<[^>]*>|&[^;]+;',
+      multiLine: true,
+      caseSensitive: true
+  );
+
+  return htmlText.replaceAll(exp, '');
 }

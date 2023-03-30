@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wazefaa/consts/countries_list.dart';
+import '../backend/get_jobs.dart';
 import '../consts/colors.dart';
 import '../widgets/logo.dart';
 import '../widgets/reusable_career_card.dart';
@@ -12,64 +13,51 @@ class CarrerasByCountryPage extends StatefulWidget {
 }
 
 class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
-  List carrerasByCountryList = [
-    {
-      'logo': 'assets/images/logo_circle.png',
-      'description': 'وظائف شاغرة في أبو ظبي لكافة الجنسيات برواتب مجزية',
-      'country': 'الإمارات العربية المتحدة',
-      'company': 'HDL Express شركة',
-      'views': '22',
-      'location': 'وظائف اليوم في السعودية لدى Atlas Copco في جدة 16/2/2023 ',
-      'jop_name': 'مهندس مبيعات',
-      'Qualification': [
-        'يجب ان يتقن اللغة الانكليزية(مستوى ممتاز)',
-        'يجب ان يتقن العمل على الحاسوب ويتقن استخجام ادوات مايكروسوفت واوفيس',
-        'يجب ان يتقن اللغة الانكليزية',
-        'يفضل أن يجيد اللغة العربية',
-        'يفضل أن يمتلك خلفية فنية وهندسية جيدة',
-        'يفضل أن يكون حاصل على درجة هندسة ميكانيكية او ما يعادلها في المجال',
-        'الإلمام والخبرة في التعامل والتفاوض بشأن الشروط والاحكام التجارية',
-      ]
-    },
-    {
-      'logo': 'assets/images/logo_circle.png',
-      'description': 'وظائف شاغرة في أبو ظبي لكافة الجنسيات برواتب مجزية',
-      'country': 'الإمارات العربية المتحدة',
-      'company': 'HDL Express شركة',
-      'views': '22',
-      'location': 'وظائف اليوم في السعودية لدى Atlas Copco في جدة 16/2/2023 ',
-      'jop_name': 'مهندس مبيعات',
-      'Qualification': [
-        'يجب ان يتقن اللغة الانكليزية(مستوى ممتاز)',
-        'يجب ان يتقن العمل على الحاسوب ويتقن استخجام ادوات مايكروسوفت واوفيس',
-        'يجب ان يتقن اللغة الانكليزية',
-        'يفضل أن يجيد اللغة العربية',
-        'يفضل أن يمتلك خلفية فنية وهندسية جيدة',
-        'يفضل أن يكون حاصل على درجة هندسة ميكانيكية او ما يعادلها في المجال',
-        'الإلمام والخبرة في التعامل والتفاوض بشأن الشروط والاحكام التجارية',
-      ]
-    },
-    {
-      'logo': 'assets/images/logo_circle.png',
-      'description': 'وظائف شاغرة في أبو ظبي لكافة الجنسيات برواتب مجزية',
-      'country': 'الإمارات العربية المتحدة',
-      'company': 'HDL Express شركة',
-      'views': '22',
-      'location': 'وظائف اليوم في السعودية لدى Atlas Copco في جدة 16/2/2023 ',
-      'jop_name': 'مهندس مبيعات',
-      'Qualification': [
-        'يجب ان يتقن اللغة الانكليزية(مستوى ممتاز)',
-        'يجب ان يتقن العمل على الحاسوب ويتقن استخجام ادوات مايكروسوفت واوفيس',
-        'يجب ان يتقن اللغة الانكليزية',
-        'يفضل أن يجيد اللغة العربية',
-        'يفضل أن يمتلك خلفية فنية وهندسية جيدة',
-        'يفضل أن يكون حاصل على درجة هندسة ميكانيكية او ما يعادلها في المجال',
-        'الإلمام والخبرة في التعامل والتفاوض بشأن الشروط والاحكام التجارية',
-      ]
+  List carrerasByCountryList = [];
+//todo:make carrerasByCountryList empty after choosing country
+  String countrySelected = '';
+  int from = 0;
+  int length = 10;
+  bool isLoadMore = false;
+  bool isDataFetched = false;
+  ScrollController scrollController = ScrollController();
+  fetchData() async {
+    var p;
+    if (countrySelected.isNotEmpty) {
+      p = await getJobsByCountry(countrySelected, from, length);
+    } else {
+      p = await getAllJobs(from, length);
     }
-  ];
+    carrerasByCountryList.addAll(p);
+    scrollController.addListener(() async {
+      if (isLoadMore) return;
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        setState(() async {
+          isLoadMore = true;
+          from = from + length;
+          if (countrySelected.isNotEmpty) {
+            p = await getJobsByCountry(countrySelected, from, length);
+          } else {
+            p = await getAllJobs(from, length);
+          }
+          carrerasByCountryList.addAll(p);
+          setState(() {
+            isLoadMore = false;
+          });
+        });
+      }
+    });
+    setState(() {
+      isDataFetched = true;
+    });
+  }
 
-  String countrySelected =  '';
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,15 +113,62 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                     ),
                   ),
                 ),
-                SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.70,
-                    child: ListView.builder(
-                      itemCount: carrerasByCountryList.length,
-                      itemBuilder: (context, index) => ReusableCareerCard(
-                        infoMap: carrerasByCountryList[index],
-                        isWeInDetailsPage: false,
+                isDataFetched
+                    ? SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.70,
+                        child: ListView.builder(
+                            controller: scrollController,
+                            itemCount: isLoadMore
+                                ? carrerasByCountryList.length + 1
+                                : carrerasByCountryList.length,
+                            itemBuilder: (context, index) {
+                              if (index >= carrerasByCountryList.length) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else {
+                                var id = carrerasByCountryList[index]['ID'];
+                                var title =
+                                    carrerasByCountryList[index]['post_title'];
+                                var content = carrerasByCountryList[index]
+                                    ['post_content'];
+                                var company =
+                                    carrerasByCountryList[index]['company'];
+                                var location = '', views = '';
+                                for (int i = 0;
+                                    i <
+                                        carrerasByCountryList[index]['Array']
+                                            .length;
+                                    i++) {
+                                  if (carrerasByCountryList[index]['Array'][i]
+                                          ['meta_key'] ==
+                                      '_location') {
+                                    location = carrerasByCountryList[index]
+                                        ['Array'][i]['meta_value'];
+                                  }
+                                  if (carrerasByCountryList[index]['Array'][i]
+                                          ['meta_key'] ==
+                                      '_noo_views_count') {
+                                    views = carrerasByCountryList[index]
+                                        ['Array'][i]['meta_value'];
+                                  }
+                                }
+                                return ReusableCareerCard(
+                                  isWeInDetailsPage: false,
+                                  id: id,
+                                  title: title,
+                                  location: location,
+                                  views: views,
+                                  content: content,
+                                  company: company,
+                                  logo: 'assets/images/logo_circle.png',
+                                );
+                              }
+                            }),
+                      )
+                    : const Center(
+                        child: CircularProgressIndicator(),
                       ),
-                    ))
               ],
             ),
           ),
@@ -164,7 +199,7 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.fromLTRB(15,15 ,15,0),
+              margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
               height: MediaQuery.of(context).size.height * 0.45,
               child: ListView.builder(
                 itemCount: countriesList.length,
@@ -182,7 +217,6 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                     onChanged: (value) {
                       setState(() {
                         countrySelected = value;
-                        print(countrySelected);
                       });
                     },
                   ),

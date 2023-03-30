@@ -6,10 +6,15 @@ import 'package:wazefaa/widgets/reusable_share_button.dart';
 
 class ReusableCvCard extends StatelessWidget {
   const ReusableCvCard({
-    Key? key,
-    required this.infoMap,
+    Key? key, required this.id, required this.title, required this.userName, required this.location, required this.review, required this.image,
+
   }) : super(key: key);
-  final Map infoMap;
+ final String id;
+  final String title;
+  final String userName;
+  final String location;
+  final String review;
+  final String image;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,12 +38,12 @@ class ReusableCvCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              infoMap['image']!=null
+              image !=null
                   ? CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 32,
                   child:ClipOval(
-                      child: Image.asset(infoMap['image'],fit: BoxFit.cover,height: 64,width: 64,)
+                      child: Image.asset(image,fit: BoxFit.cover,height: 64,width: 64,)
                   ),)
               :const CircleAvatar(
                   backgroundColor: Colors.white,
@@ -51,7 +56,7 @@ class ReusableCvCard extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.6,
                     child: Text(
-                      infoMap['name'],
+                      userName,
                       style: const TextStyle(color: kThirdColor, fontSize: 15,fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -63,7 +68,7 @@ class ReusableCvCard extends StatelessWidget {
                     const SizedBox(
                       width: 5,
                     ),
-                    Text(infoMap['jop']),
+                    Text(title),
                   ],),
                   const SizedBox(
                     height: 3,
@@ -73,7 +78,7 @@ class ReusableCvCard extends StatelessWidget {
                     const SizedBox(
                       width: 5,
                     ),
-                    Text(infoMap['location']),
+                    Text(location),
                   ],),
                 ],
               ),
@@ -82,7 +87,7 @@ class ReusableCvCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ReusableReviewRow(review: '${infoMap['review']}',),
+              ReusableReviewRow(review: review,),
               IconButton(icon:const Icon(Icons.favorite_border,size: 17,),onPressed: (){},)
             ],
           )

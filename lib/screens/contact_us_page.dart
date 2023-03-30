@@ -86,6 +86,5 @@ class ContactUsPage extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }
