@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           '/login': (context) => const LoginScreen(),
           '/register': (context) => const RegisterScreen(),
           '/home': (context) => const Home2(),
-          '/blog_details': (context) => const BlogDetails(),
+          '/blog_details': (context)=> const BlogDetails(),
           '/profile': (context) => const ProfilePage(),
           '/CVs': (context) => const CVsPage(),
           '/contact_us': (context) => const ContactUsPage(),
@@ -39,7 +39,6 @@ class MyApp extends StatelessWidget {
           '/forget_password': (context) => const ForgetPasswordScreen(),
           '/add_job':(context)=>const AddJobPage(),
           '/add_cv':(context)=>const AddCvPage(),
-
         },
         home: const SplashScreen());
   }
