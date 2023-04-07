@@ -64,54 +64,57 @@ class _CompaniesPageState extends State<CompaniesPage> {
         automaticallyImplyLeading: false,
       ),
       body: isDataFetched
-          ? Container(
-            margin: const EdgeInsets.only(top: 5),
-            padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-            height: MediaQuery.of(context).size.height,
-            child: ListView.builder(
-                controller: scrollController,
-                itemCount: isLoadMore
-                    ? companiesList.length + 1
-                    : companiesList.length,
-                itemBuilder: (context, index) {
-                  if (index >= companiesList.length) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    var id = companiesList[index]['ID'];
-                    var title = companiesList[index]['post_title'];
-                    var content = companiesList[index]['post_content'];
-                    var jobsCount = '', rating = '', review = '';
-                    for (int i = 0; i < companiesList[index]['tags'].length; i++) {
-                      if (companiesList[index]['tags'][i]['meta_key'] ==
-                          '_noo_job_count') {
-                        jobsCount =
-                            companiesList[index]['tags'][i]['meta_value'];
+          ? Directionality(
+            textDirection: TextDirection.rtl,
+            child: Container(
+              margin: const EdgeInsets.only(top: 5),
+              padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+              height: MediaQuery.of(context).size.height,
+              child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: isLoadMore
+                      ? companiesList.length + 1
+                      : companiesList.length,
+                  itemBuilder: (context, index) {
+                    if (index >= companiesList.length) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      var id = companiesList[index]['ID'];
+                      var title = companiesList[index]['post_title'];
+                      var content = companiesList[index]['post_content'];
+                      var jobsCount = '', rating = '', review = '';
+                      for (int i = 0; i < companiesList[index]['tags'].length; i++) {
+                        if (companiesList[index]['tags'][i]['meta_key'] ==
+                            '_noo_job_count') {
+                          jobsCount =
+                              companiesList[index]['tags'][i]['meta_value'];
+                        }
+                        if (companiesList[index]['tags'][i]['meta_key'] ==
+                            '_noo_average_rating') {
+                          rating =
+                              companiesList[index]['tags'][i]['meta_value'];
+                        }
+                        if (companiesList[index]['tags'][i]['meta_key'] ==
+                            'total_review') {
+                          review =
+                              companiesList[index]['tags'][i]['meta_value'];
+                        }
                       }
-                      if (companiesList[index]['tags'][i]['meta_key'] ==
-                          '_noo_average_rating') {
-                        rating =
-                            companiesList[index]['tags'][i]['meta_value'];
-                      }
-                      if (companiesList[index]['tags'][i]['meta_key'] ==
-                          'total_review') {
-                        review =
-                            companiesList[index]['tags'][i]['meta_value'];
-                      }
+                      return ReusableCompanyCard(
+                        isWeInDetailsPage: false,
+                        id: id,
+                        title: title,
+                        jobsCount: jobsCount,
+                        rating: rating,
+                        review: review,
+                        content: content,
+                        logo: 'assets/images/logo_circle.png',
+                      );
                     }
-                    return ReusableCompanyCard(
-                      isWeInDetailsPage: false,
-                      id: id,
-                      title: title,
-                      jobsCount: jobsCount,
-                      rating: rating,
-                      review: review,
-                      content: content,
-                      logo: 'assets/images/logo_circle.png',
-                    );
-                  }
-                }),
+                  }),
+            ),
           )
           : const Center(
               child: CircularProgressIndicator(),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../backend/update_user_info.dart';
 import '../consts/colors.dart';
 import '../widgets/reusable_button.dart';
 import '../widgets/reusable_text_field.dart';
@@ -13,8 +14,18 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final _formKey = GlobalKey<FormState>();
+  String _id = '';
+  String _email = '';
+  String _username = '';
+  String? _phone = '';
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic>? args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+      // _username = args!['user_name'];
+      // _email = args['user_email'];
+      // _phone = args['user_phone'];
     return Scaffold(
       backgroundColor: kOfWhiteBgColor,
       appBar: AppBar(
@@ -32,49 +43,46 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(15,35,15,0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+        child: Form(
+          key:   _formKey,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(15, 35, 15, 0),
+              child:
+                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Center(
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
                       hasImage == false
-                        ? _imageFile == null
-                          ? const CircleAvatar(
-                          backgroundColor: kBgColor,
-                          radius: 65,
-                          child: Icon(
-                            Icons.person,
-                            size: 90,
-                            color: Colors.white,
-                          ))
+                          ? _imageFile == null
+                              ? CircleAvatar(
+                                  backgroundColor: kBgColor,
+                                  radius: 65,
+                                  child:Image.asset('assets/images/user_icon.png'))
+                              : CircleAvatar(
+                                  backgroundColor: kBgColor,
+                                  radius: 65,
+                                  child: ClipOval(
+                                      child: Image.file(
+                                    _imageFile!,
+                                    fit: BoxFit.cover,
+                                    height: 130,
+                                    width: 130,
+                                  )),
+                                )
                           : CircleAvatar(
-                        backgroundColor: kBgColor,
-                        radius: 65,
-                        child: ClipOval(
-                            child: Image.file(
-                              _imageFile!,
-                              fit: BoxFit.cover,
-                              height: 130,
-                              width: 130,
-                            )),
-                      )
-                          : CircleAvatar(
-                        backgroundColor: kBasicColor,
-                        radius: 65,
-                        child: ClipOval(
-                            child: //Container(),
-                            Image.asset(
-                              'assets/images/profile.jpg',
-                              fit: BoxFit.cover,
-                              height: 130,
-                              width: 130,
-                            )),
-                      ),
+                              backgroundColor: kBasicColor,
+                              radius: 65,
+                              child: ClipOval(
+                                  child: //Container(),
+                                      Image.asset(
+                                'assets/images/profile.jpg',
+                                fit: BoxFit.cover,
+                                height: 130,
+                                width: 130,
+                              )),
+                            ),
                       Positioned(
                         bottom: 3.0,
                         left: 0.0,
@@ -96,15 +104,55 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 25,),
-                ReusableTextFieldForProfile(value: 'سامي حمد',onChangedFunc: (){},text:'اسم المستخدم'),
-                const SizedBox(height: 20,),
-                ReusableTextFieldForProfile(value: ' +0508090804',onChangedFunc: (){},text:'رقم الهاتف'),
-                const SizedBox(height: 20,),
-                ReusableTextFieldForProfile(value: 'sami@gmail.com',onChangedFunc: (){},text:'البريد الإلكتروني'),
-                const SizedBox(height: 25,),
-                ReUsableButtonWithRoundedCorner(text: 'حفظ',onPressButton: (){},)
-              ]
+                const SizedBox(
+                  height: 25,
+                ),
+                ReusableTextFieldForProfile(
+                    hintText: args!['user_name'],
+                    onChangedFunc: (value) {
+                      setState(() {
+                        _username = value;
+                        print(_username);
+                      });
+                    },
+                    text: 'اسم المستخدم'),
+                const SizedBox(
+                  height: 20,
+                ),
+                ReusableTextFieldForProfile(
+                    hintText: args['user_phone'].toString(),
+                    onChangedFunc: (value) {
+                      setState(() {
+                        _phone = value.toString();
+                        print(_phone);
+                        print(_username);
+                      });
+                    },
+                    text: 'رقم الهاتف'),
+                const SizedBox(
+                  height: 20,
+                ),
+                ReusableTextFieldForProfile(
+                    hintText: args['user_email'],
+                    onChangedFunc: (value) {
+                      setState(() {
+                        _email = value;
+                      });
+                    },
+                    text: 'البريد الإلكتروني'),
+                const SizedBox(
+                  height: 25,
+                ),
+                ReUsableButtonWithRoundedCorner(
+                  text: 'حفظ',
+                  onPressButton: () async {
+                    print(_phone);
+                    _id = args['ID'];
+                    var response =
+                        await updateUserInfo(_id, _email, _username, _phone);
+                  },
+                )
+              ]),
             ),
           ),
         ),
@@ -114,16 +162,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
   File? _imageFile;
   final ImagePicker _picker = ImagePicker();
-  bool hasImage=false;
-  goTOGallery() async{
-      final pickedFile = await _picker.pickImage(
-        source: ImageSource.gallery,
-      );
-      if (pickedFile != null) {
-        setState(() {
-          hasImage = false;
-          _imageFile = File(pickedFile.path);
-        });
-      }
+  bool hasImage = false;
+  goTOGallery() async {
+    final pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        hasImage = false;
+        _imageFile = File(pickedFile.path);
+      });
+    }
   }
 }

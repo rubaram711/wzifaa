@@ -51,6 +51,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   ReusableTextField(
                     text: 'البريد الإلكتروني',
                     isPasswordField: false,
+                    isEnabled: true,
                     onChangedFunc: (value) {
                       _formKey.currentState?.validate();
                       setState(() {
@@ -70,8 +71,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   ReUsableButton(text: 'استعادة كلمة المرور', onPressButton: () async{
                     if (_formKey.currentState!.validate()) {
                       var response = await resetPassword(_email);
-                      if(response==200){
-                        Navigator.pushNamed(context, '/home');
+                      if(response=='success'){
+                       alert(context, 'we sent a reset password link, check your email please');
                       }
                       else{
                         alert(context, 'يوجد خطأ ما تحقق من معلوماتك');

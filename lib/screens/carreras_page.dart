@@ -4,6 +4,8 @@ import '../consts/colors.dart';
 import '../consts/jobs_type_list.dart';
 import '../widgets/reusable_career_card.dart';
 
+String typeSelected = '';
+
 class CarrerasPage extends StatefulWidget {
   const CarrerasPage({Key? key}) : super(key: key);
 
@@ -12,9 +14,9 @@ class CarrerasPage extends StatefulWidget {
 }
 
 class _CarrerasPageState extends State<CarrerasPage> {
-  List carrerasList=[];
+  List carrerasList = [];
   //todo:make carrerasByCountryList empty after choosing country
-  String typeSelected='';
+
   int from = 0;
   int length = 10;
   bool isLoadMore = false;
@@ -22,10 +24,10 @@ class _CarrerasPageState extends State<CarrerasPage> {
   ScrollController scrollController = ScrollController();
   fetchData() async {
     var p;
-    if(typeSelected.isNotEmpty) {
+    if (typeSelected.isNotEmpty) {
       p = await getJobsByCCT('', '', typeSelected, '', from, length);
-    }else{
-      p= await getAllJobs(from, length);
+    } else {
+      p = await getAllJobs(from, length);
     }
     carrerasList.addAll(p);
     scrollController.addListener(() async {
@@ -35,10 +37,10 @@ class _CarrerasPageState extends State<CarrerasPage> {
         setState(() async {
           isLoadMore = true;
           from = from + length;
-          if(typeSelected.isNotEmpty) {
+          if (typeSelected.isNotEmpty) {
             p = await getJobsByCCT('', '', typeSelected, '', from, length);
-          }else{
-            p= await getAllJobs(from, length);
+          } else {
+            p = await getAllJobs(from, length);
           }
           carrerasList.addAll(p);
           setState(() {
@@ -54,15 +56,17 @@ class _CarrerasPageState extends State<CarrerasPage> {
 
   @override
   void initState() {
-    fetchData();
+    typeSelected==''? fetchData():fetchData();
+    print('kzknvdllnnvnnvnvnn $typeSelected');
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        toolbarHeight:MediaQuery.of(context).size.height*0.10,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.10,
         backgroundColor: kBasicColor,
         title: const Text(
           'وظائف اليوم',
@@ -78,14 +82,14 @@ class _CarrerasPageState extends State<CarrerasPage> {
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Column(
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height*0.06,
+                  height: MediaQuery.of(context).size.height * 0.06,
                   child: Center(
                     child: InkWell(
-                      onTap: (){
+                      onTap: () {
                         showModalBottomSheet(
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.vertical(
@@ -95,63 +99,81 @@ class _CarrerasPageState extends State<CarrerasPage> {
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             context: context,
                             builder: (context) =>
-                                _buildBottomSheetForCarreras(context));
+                                const BuildBottomSheetForCarreras());
                       },
                       child: Row(
-                        children:const [
-                          Icon(Icons.filter_alt,color: kThirdColor,),
-                          SizedBox(width: 10,),
-                          Text('أنواع الوظائف',style: TextStyle(color: kThirdColor, fontSize: 15,fontWeight: FontWeight.bold),),
+                        children: const [
+                          Icon(
+                            Icons.filter_alt,
+                            color: kThirdColor,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'أنواع الوظائف',
+                            style: TextStyle(
+                                color: kThirdColor,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
                 isDataFetched
-                    ?SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.70,
-                  child: ListView.builder(
-                      controller: scrollController,
-                      itemCount: isLoadMore
-                          ? carrerasList.length + 1
-                          : carrerasList.length,
-                      itemBuilder: (context, index) {
-                        if (index >= carrerasList.length) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else {
-                          var id = carrerasList[index]['ID'];
-                          var title = carrerasList[index]['post_title'];
-                          var content = carrerasList[index]['post_content'];
-                          var company = carrerasList[index]['company'];
-                          var location = '', views = '';
-                          for (int i = 0; i < carrerasList[index]['Array'].length; i++) {
-                            if (carrerasList[index]['Array'][i]['meta_key']=='_location') {
-                              location =
-                              carrerasList[index]['Array'][i]['meta_value'];
-                            }
-                            if (carrerasList[index]['Array'][i]['meta_key']=='_noo_views_count') {
-                              views =
-                              carrerasList[index]['Array'][i]['meta_value'];
-                            }
-                          }
-                          return ReusableCareerCard(
-                            isWeInDetailsPage: false,
-                            id: id,
-                            title: title,
-                            location: location,
-                            views: views,
-                            content: content,
-                            company: company,
-                            logo: 'assets/images/logo_circle.png',
-                          );
-                        }
-                      }),
-                )
+                    ? SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.70,
+                        child: ListView.builder(
+                            controller: scrollController,
+                            itemCount: isLoadMore
+                                ? carrerasList.length + 1
+                                : carrerasList.length,
+                            itemBuilder: (context, index) {
+                              if (index >= carrerasList.length) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else {
+                                var id = carrerasList[index]['ID'];
+                                var title = carrerasList[index]['post_title'];
+                                var content =
+                                    carrerasList[index]['post_content'];
+                                var company = carrerasList[index]['company'];
+                                var location = '', views = '';
+                                for (int i = 0;
+                                    i < carrerasList[index]['Array'].length;
+                                    i++) {
+                                  if (carrerasList[index]['Array'][i]
+                                          ['meta_key'] ==
+                                      '_location') {
+                                    location = carrerasList[index]['Array'][i]
+                                        ['meta_value'];
+                                  }
+                                  if (carrerasList[index]['Array'][i]
+                                          ['meta_key'] ==
+                                      '_noo_views_count') {
+                                    views = carrerasList[index]['Array'][i]
+                                        ['meta_value'];
+                                  }
+                                }
+                                return ReusableCareerCard(
+                                  isWeInDetailsPage: false,
+                                  id: id,
+                                  title: title,
+                                  location: location,
+                                  views: views,
+                                  content: content,
+                                  company: company,
+                                  logo: '',
+                                );
+                              }
+                            }),
+                      )
                     : const Center(
-                  child: CircularProgressIndicator(),
-                ),
+                        child: CircularProgressIndicator(),
+                      ),
               ],
             ),
           ),
@@ -159,9 +181,20 @@ class _CarrerasPageState extends State<CarrerasPage> {
       ),
     );
   }
+}
 
+class BuildBottomSheetForCarreras extends StatefulWidget {
+  const BuildBottomSheetForCarreras({Key? key}) : super(key: key);
 
-  SizedBox _buildBottomSheetForCarreras(BuildContext context) {
+  @override
+  State<BuildBottomSheetForCarreras> createState() =>
+      _BuildBottomSheetForCarrerasState();
+}
+
+class _BuildBottomSheetForCarrerasState
+    extends State<BuildBottomSheetForCarreras> {
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.4,
       child: Directionality(
@@ -183,27 +216,98 @@ class _CarrerasPageState extends State<CarrerasPage> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.fromLTRB(15,15 ,15,0),
+              margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
               height: MediaQuery.of(context).size.height * 0.29,
-              child: ListView.builder(
-                itemCount: jobsTypeList.length,
-                itemBuilder: (context, index) => Material(
-                  child: RadioListTile(
-                    title: Text(
-                      jobsTypeList[index],
-                      style: const TextStyle(
-                          fontSize: 14,
-                          color: kThirdColor,
-                          fontWeight: FontWeight.bold),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    RadioListTile(
+                      title: Text(
+                        jobsTypeList[0],
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: kThirdColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      value: jobsTypeList[0],
+                      groupValue: typeSelected,
+                      onChanged: (value) {
+                        setState(() {
+                          typeSelected = value;
+                          Navigator.pop(context);
+                        });
+                      },
                     ),
-                    value: jobsTypeList[index],
-                    groupValue: typeSelected,
-                    onChanged: (value) {
-                      setState(() {
-                        typeSelected = value;
-                      });
-                    },
-                  ),
+                    RadioListTile(
+                      title: Text(
+                        jobsTypeList[1],
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: kThirdColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      value: jobsTypeList[1],
+                      groupValue: typeSelected,
+                      onChanged: (value) {
+                        setState(() {
+                          typeSelected = value;
+                          Navigator.pop(context);
+                        });
+                      },
+                    ),
+                    RadioListTile(
+                      title: Text(
+                        jobsTypeList[2],
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: kThirdColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      value: jobsTypeList[2],
+                      groupValue: typeSelected,
+                      onChanged: (value) {
+                        setState(() {
+                          typeSelected = value;
+                          Navigator.pop(context);
+                        });
+                      },
+                    ),
+                    RadioListTile(
+                      title: Text(
+                        jobsTypeList[3],
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: kThirdColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      value: jobsTypeList[3],
+                      groupValue: typeSelected,
+                      onChanged: (value) {
+                        setState(() {
+                          typeSelected = value;
+                          print(typeSelected);
+                          Navigator.pop(context);
+                        });
+                      },
+                    ),
+                    RadioListTile(
+                      title: Text(
+                        jobsTypeList[4],
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: kThirdColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      value: jobsTypeList[4],
+                      groupValue: typeSelected,
+                      onChanged: (value) {
+                        setState(() {
+                          typeSelected = value;
+                          Navigator.pop(context);
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
             )
@@ -213,3 +317,56 @@ class _CarrerasPageState extends State<CarrerasPage> {
     );
   }
 }
+// SizedBox _buildBottomSheetForCarreras(BuildContext context) {
+//   return SizedBox(
+//     height: MediaQuery.of(context).size.height * 0.4,
+//     child: Directionality(
+//       textDirection: TextDirection.rtl,
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Container(
+//             height: 60,
+//             color: Colors.white,
+//             child: const Center(
+//               child: Text(
+//                 'اختر نوع الوظيفة',
+//                 style: TextStyle(
+//                     color: kThirdColor,
+//                     fontSize: 18,
+//                     fontWeight: FontWeight.bold),
+//               ),
+//             ),
+//           ),
+//           Container(
+//             margin: const EdgeInsets.fromLTRB(15,15 ,15,0),
+//             height: MediaQuery.of(context).size.height * 0.29,
+//             child: ListView.builder(
+//               itemCount: jobsTypeList.length,
+//               itemBuilder: (context, index) {
+//                  typeSelected=jobsTypeList[0];
+//                 return RadioListTile(
+//                   title: Text(
+//                     jobsTypeList[index],
+//                     style: const TextStyle(
+//                         fontSize: 14,
+//                         color: kThirdColor,
+//                         fontWeight: FontWeight.bold),
+//                   ),
+//                   value: jobsTypeList[index],
+//                   groupValue: typeSelected,
+//                   onChanged: (value) {
+//                     setState(() {
+//                       typeSelected = value;
+//                       print(typeSelected);
+//                     });
+//                   },
+//                 );
+//               },
+//             ),
+//           )
+//         ],
+//       ),
+//     ),
+//   );
+// }

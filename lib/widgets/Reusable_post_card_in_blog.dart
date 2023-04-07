@@ -75,23 +75,8 @@ class ReusablePostCard extends StatelessWidget {
           Divider(color: Colors.grey.withOpacity(0.5),),
 
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(width: 10,),
-                  const Icon(
-                    Icons.comment,
-                    color: Colors.grey,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 5,),
-                  Text(
-                    '5 تعليقات',
-                    style: TextStyle(color: Colors.grey[700],fontSize: 15),),
-                ],
-              ),
               InkWell(
                 onTap: (){
                   Navigator.pushNamed(context, '/blog_details',arguments: {

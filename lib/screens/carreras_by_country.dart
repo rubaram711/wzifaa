@@ -161,7 +161,7 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                                   views: views,
                                   content: content,
                                   company: company,
-                                  logo: 'assets/images/logo_circle.png',
+                                  logo: '',
                                 );
                               }
                             }),

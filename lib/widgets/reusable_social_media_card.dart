@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../consts/colors.dart';
 
 class ReusableSocialMediaCard extends StatelessWidget {

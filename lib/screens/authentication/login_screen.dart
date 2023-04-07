@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ReusableTextField(
                     text: 'البريد الإلكتروني',
                     isPasswordField: false,
+                    isEnabled: true,
                     onChangedFunc: (value) {
                       _formKey.currentState?.validate();
                       setState(() {
@@ -69,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ReusableTextField(
                     text: 'كلمة المرور',
                     isPasswordField: true,
+                    isEnabled: true,
                     onChangedFunc: (value) {
                       _formKey.currentState?.validate();
                       setState(() {

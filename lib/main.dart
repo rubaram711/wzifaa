@@ -12,6 +12,7 @@ import 'package:wazefaa/screens/contact_us_page.dart';
 import 'package:wazefaa/screens/custom_splash_screen.dart';
 import 'package:wazefaa/screens/home_page.dart';
 import 'package:wazefaa/screens/profile-page.dart';
+import 'package:wazefaa/screens/share_my_app.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
           '/forget_password': (context) => const ForgetPasswordScreen(),
           '/add_job':(context)=>const AddJobPage(),
           '/add_cv':(context)=>const AddCvPage(),
+         // '/ShareMe':(context)=>  ShareMe(title: '',)
         },
         home: const SplashScreen());
   }

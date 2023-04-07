@@ -38,17 +38,17 @@ class ReusableCvCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              image !=null
+              image !=''
                   ? CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 32,
                   child:ClipOval(
                       child: Image.asset(image,fit: BoxFit.cover,height: 64,width: 64,)
                   ),)
-              :const CircleAvatar(
+              : CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 32,
-                  child: Icon(Icons.person,color: Colors.black,size: 30,)),
+                  child:  Image.asset('assets/images/user_icon.png')),
               const SizedBox(width: 15,),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

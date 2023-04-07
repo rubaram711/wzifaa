@@ -38,9 +38,14 @@ Future getJobsByCCT(String search,String country,String type,String cat,int from
   final uri = Uri.parse(kGetJobsByCCTUrl);
   var response = await http.post(
     uri,
-    body: jsonEncode(<String, dynamic>{
+    body:search.isNotEmpty&&country.isNotEmpty? jsonEncode(<String, dynamic>{
       'search': search,
       'country': country,
+      'type': type,
+      'cat': cat,
+      'from': from,
+      'length':length
+    }):jsonEncode(<String, dynamic>{
       'type': type,
       'cat': cat,
       'from': from,

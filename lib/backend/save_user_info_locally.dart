@@ -7,7 +7,7 @@ saveUserInfoLocally(String token, String role, String id) async {
   prefs.setString('ID', id);
 }
 
-Future<Map> getUserInfo(String token, String role, String id) async {
+Future<Map> getUserInfoFromPref() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token') ?? '';
   String role = prefs.getString('role') ?? '';
@@ -19,19 +19,19 @@ Future<Map> getUserInfo(String token, String role, String id) async {
   };
 }
 
-Future<String> getToken() async {
+Future<String> getTokenFromPref() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token') ?? '';
   return token;
 }
 
-Future<String> getID() async {
+Future<String> getIdFromPref() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String id = prefs.getString('ID') ?? '';
   return id;
 }
 
-Future<String> getRole() async {
+Future<String> getRoleFromPref() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String role = prefs.getString('role') ?? '';
   return role;

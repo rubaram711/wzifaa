@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wazefaa/backend/add_job.dart';
+import 'package:wazefaa/backend/save_user_info_locally.dart';
 import 'package:wazefaa/screens/authentication/validation_function.dart';
 import 'package:wazefaa/widgets/reusable_alert.dart';
 import '../../consts/colors.dart';
@@ -63,6 +64,7 @@ class _AddCvPageState extends State<AddCvPage> {
                       ReusableTextField(
                         text: 'المسمى الوظيفي',
                         isPasswordField: false,
+                        isEnabled: true,
                         onChangedFunc: (value) {
                           _formKey.currentState?.validate();
                           setState(() {
@@ -79,6 +81,7 @@ class _AddCvPageState extends State<AddCvPage> {
                       ReusableTextField(
                         text: 'تفاصيل الوظيفة',
                         isPasswordField: true,
+                        isEnabled: true,
                         onChangedFunc: (value) {
                           _formKey.currentState?.validate();
                           setState(() {
@@ -95,6 +98,7 @@ class _AddCvPageState extends State<AddCvPage> {
                       ReusableTextField(
                         text: 'البريد الإلكتروني',
                         isPasswordField: false,
+                        isEnabled: true,
                         onChangedFunc: (value) {
                           _formKey.currentState?.validate();
                           setState(() {
@@ -114,6 +118,7 @@ class _AddCvPageState extends State<AddCvPage> {
                       ReusableTextField(
                         text: 'تاريخ انتهاء عرض الوظيفة',
                         isPasswordField: true,
+                        isEnabled: true,
                         onChangedFunc: (value) {
                           _formKey.currentState?.validate();
                           setState(() {
@@ -134,8 +139,8 @@ class _AddCvPageState extends State<AddCvPage> {
                     const SizedBox(height: 10,),
                     ReUsableButton(text: 'إكمال تعبئة البيانات', onPressButton: () async{
                       if (_formKey.currentState!.validate()) {
-                        //todo get author
-                        var response = await addJob('author', _title, _email, _content, _exp);
+                        String id=await getIdFromPref();
+                        var response = await addJob(id, _title, _email, _content, _exp);
                         if(response==200){
                           Navigator.pushNamed(context, '/home');
                         }

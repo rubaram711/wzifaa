@@ -20,8 +20,8 @@ dependencies:
   url_launcher:
   shared_preferences: ^2.0.20
   flutter_html: ^2.2.1
-#  flutter_rating_bar: ^4.0.1
-
+  share_plus: ^6.3.1
+#  shareapks: ^0.0.2
 
 dev_dependencies:
   flutter_test:

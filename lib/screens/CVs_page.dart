@@ -12,35 +12,35 @@ class CVsPage extends StatefulWidget {
 }
 
 class _CVsPageState extends State<CVsPage> {
-  List cvsList=[
-  //   {
-  //   'image':'assets/images/profile.jpg',
-  //   'name':'سامي حمد',
-  //   'jop':'Product Designer',
-  //   'location': 'الامارات العربية المتحدة',
-  //   'review':'21'
-  // },
-  // {
-  //   'image':'assets/images/profile.jpg',
-  //   'name':'سامي حمد',
-  //   'jop':'Product Designer',
-  //   'location': 'الامارات العربية المتحدة',
-  //   'review':'21'
-  // },
-  // {
-  //   'image':'assets/images/profile.jpg',
-  //   'name':'سامي حمد',
-  //   'jop':'Product Designer',
-  //   'location': 'الامارات العربية المتحدة',
-  //   'review':'21'
-  // },
-  // {
-  //   'image':'assets/images/profile.jpg',
-  //   'name':'سامي حمد',
-  //   'jop':'Product Designer',
-  //   'location': 'الامارات العربية المتحدة',
-  //   'review':'21'
-  // },
+  List cvsList = [
+    //   {
+    //   'image':'assets/images/profile.jpg',
+    //   'name':'سامي حمد',
+    //   'jop':'Product Designer',
+    //   'location': 'الامارات العربية المتحدة',
+    //   'review':'21'
+    // },
+    // {
+    //   'image':'assets/images/profile.jpg',
+    //   'name':'سامي حمد',
+    //   'jop':'Product Designer',
+    //   'location': 'الامارات العربية المتحدة',
+    //   'review':'21'
+    // },
+    // {
+    //   'image':'assets/images/profile.jpg',
+    //   'name':'سامي حمد',
+    //   'jop':'Product Designer',
+    //   'location': 'الامارات العربية المتحدة',
+    //   'review':'21'
+    // },
+    // {
+    //   'image':'assets/images/profile.jpg',
+    //   'name':'سامي حمد',
+    //   'jop':'Product Designer',
+    //   'location': 'الامارات العربية المتحدة',
+    //   'review':'21'
+    // },
   ];
   int from = 0;
   int length = 10;
@@ -48,7 +48,7 @@ class _CVsPageState extends State<CVsPage> {
   bool isDataFetched = false;
   ScrollController scrollController = ScrollController();
   fetchData() async {
-    var p = await getUsers('',from, length);
+    var p = await getUsers('', from, length);
     cvsList.addAll(p);
     scrollController.addListener(() async {
       if (isLoadMore) return;
@@ -57,7 +57,7 @@ class _CVsPageState extends State<CVsPage> {
         setState(() async {
           isLoadMore = true;
           from = from + length;
-          p = await getUsers('',from, length);
+          p = await getUsers('', from, length);
           cvsList.addAll(p);
           setState(() {
             isLoadMore = false;
@@ -75,6 +75,7 @@ class _CVsPageState extends State<CVsPage> {
     fetchData();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,64 +92,65 @@ class _CVsPageState extends State<CVsPage> {
           ),
         ),
       ),
-      body:isDataFetched
+      body: isDataFetched
           ? Directionality(
-        textDirection: TextDirection.rtl,
-        child: Container(
-            margin:const EdgeInsets.only(top: 5),
-            padding: const EdgeInsets.fromLTRB(15,10,15,0),
-            height: MediaQuery.of(context).size.height,
-            child: ListView.builder(
-                controller: scrollController,
-                itemCount: isLoadMore
-                    ? cvsList.length + 1
-                    : cvsList.length,
-                itemBuilder: (context, index) {
-                  if (index >= cvsList.length) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    var id = cvsList[index]['ID'];
-                    var title = cvsList[index]['post_title'];
-                    var userName = cvsList[index]['username'];
-                    var location = '', review = '';
-                    for (int i = 0; i < cvsList[index]['tags'].length; i++) {
-                      if (cvsList[index]['tags'][i]['meta_key']=='_location') {
-                        location =cvsList[index]['tags'][i]['meta_value'];
+              textDirection: TextDirection.rtl,
+              child: Container(
+                margin: const EdgeInsets.only(top: 5),
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                height: MediaQuery.of(context).size.height,
+                child: ListView.builder(
+                    controller: scrollController,
+                    itemCount: isLoadMore ? cvsList.length + 1 : cvsList.length,
+                    itemBuilder: (context, index) {
+                      if (index >= cvsList.length) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        var id = '', title = '';
+                        id = cvsList[index]['ID'];
+                        title = cvsList[index]['post_title'];
+                        var userName = '';
+                        var location = '', review = '';
+                        for (int i = 0;
+                            i < cvsList[index]['usermeta'].length;
+                            i++) {
+                          if (cvsList[index]['usermeta'][i]['meta_user_key'] ==
+                              'nickname') {
+                            userName = cvsList[index]['usermeta'][i]
+                                ['meta_user_value'];
+                          }
+                        }
+                        for (int i = 0;
+                            i < cvsList[index]['postmeta'].length;
+                            i++) {
+                          if (cvsList[index]['postmeta'][i]['meta_key'] ==
+                              '_job_location') {
+                            location =
+                                cvsList[index]['postmeta'][i]['meta_value'];
+                          }
+                          if (cvsList[index]['postmeta'][i]['meta_key'] ==
+                              '"_noo_views_count') {
+                            review =
+                                cvsList[index]['postmeta'][i]['meta_value'];
+                          }
+                        }
+                        return ReusableCvCard(
+                          id: id,
+                          title: title,
+                          userName: userName,
+                          location: location,
+                          review: review,
+                          image: '',
+                        );
                       }
-                      if (cvsList[index]['tags'][i]['meta_key'] ==
-                          'total_review') {
-                        review =
-                        cvsList[index]['tags'][i]['meta_value'];
-                      }
-                    }
-                    return ReusableCvCard(
-                            id: id,
-                            title: title,
-                            userName: userName,
-                            location: location,
-                            review: review,
-                            image: 'assets/images/profile.jpg',
-                          );
-                  }
-                }),
-            // child: ListView.builder(
-            //   itemCount: cvsList.length,
-            //   itemBuilder: (context, index) => ReusableCvCard(
-            //     id: id,
-            //     title: title,
-            //     userName: userName,
-            //     location: location,
-            //     review: review,
-            //     image: 'assets/images/profile.jpg',
-            //   ),
-            // )
-     ),
-      )
+                    }),
+              ),
+            )
           : const Center(
-        child: CircularProgressIndicator(),
-      ),
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 }

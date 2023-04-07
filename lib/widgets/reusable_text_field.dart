@@ -7,13 +7,13 @@ import '../consts/colors.dart';
 class ReusableTextField extends StatefulWidget {
   const ReusableTextField({super.key,
     required this.onChangedFunc,
-    required this.validationFunc, required this.text, required this.isPasswordField,
+    required this.validationFunc, required this.text, required this.isPasswordField, required this.isEnabled,
   });
   final Function onChangedFunc;
   final Function validationFunc;
   final String text;
   final bool isPasswordField;
-
+final bool isEnabled;
 
   @override
   State<ReusableTextField> createState() => _ReusableTextFieldState();
@@ -65,8 +65,8 @@ class _ReusableTextFieldState extends State<ReusableTextField> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(width: 1, color: Colors.red),
         ),
-
       ),
+      enabled:widget.isEnabled,
       validator:(value){
         return widget.validationFunc(value);
       },
@@ -78,10 +78,10 @@ class _ReusableTextFieldState extends State<ReusableTextField> {
 
 
 class ReusableTextFieldForProfile extends StatelessWidget {
-  const ReusableTextFieldForProfile({Key? key, required this.onChangedFunc, required this.text, required this.value}) : super(key: key);
+  const ReusableTextFieldForProfile({Key? key, required this.onChangedFunc, required this.text, required this.hintText}) : super(key: key);
   final Function onChangedFunc;
   final String text;
-  final String value;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +92,7 @@ class ReusableTextFieldForProfile extends StatelessWidget {
         Text(text,style:const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15),),
         const SizedBox(height: 10,),
         TextFormField(
+          key: Key(hintText.toString()), //////
           textDirection:TextDirection.rtl,
           cursorColor: kBasicColor,
           style: const TextStyle(
@@ -101,7 +102,7 @@ class ReusableTextFieldForProfile extends StatelessWidget {
           keyboardType:text=='رقم الهاتف'? TextInputType.number:
           text=='البريد الإلكتروني'? TextInputType.emailAddress :TextInputType.text,
           decoration: InputDecoration(
-            hintText: value,
+            hintText: hintText,
             filled: true,
             fillColor: Colors.white,
             contentPadding: const EdgeInsets.fromLTRB(5,15,26,15),
@@ -120,7 +121,7 @@ class ReusableTextFieldForProfile extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
           ),
-          onChanged:(value)=>onChangedFunc(value),
+          onChanged:(value){onChangedFunc(value);},
         ),
       ],
     );

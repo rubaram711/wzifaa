@@ -65,7 +65,12 @@ class ReusableCareerCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
+                logo==''
+                    ? CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 32,
+                    child: Image.asset('assets/images/search_wazifa_logo.png'))
+                    :CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 32,
                     child: Image.asset(logo)),

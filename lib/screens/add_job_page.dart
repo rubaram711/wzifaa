@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:wazefaa/backend/add_job.dart';
 import 'package:wazefaa/screens/authentication/validation_function.dart';
+import 'package:wazefaa/widgets/reusable_alert.dart';
 import '../../consts/colors.dart';
 import '../../widgets/logo.dart';
 import '../../widgets/reusable_back_arrow.dart';
 import '../../widgets/reusable_button.dart';
 import '../../widgets/reusable_text_field.dart';
+import '../backend/save_user_info_locally.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AddJobPage extends StatefulWidget {
   const AddJobPage({Key? key}) : super(key: key);
@@ -17,7 +20,7 @@ class AddJobPage extends StatefulWidget {
 class _AddJobPageState extends State<AddJobPage> {
   final _formKey = GlobalKey<FormState>();
   String _email = '', _title = '';
-  String _exp = '', _content = '';
+  String _exp = '', _yearExp = '', _monthExp = 'الشهر', _dayExp = '', _content = '';
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -67,6 +70,7 @@ class _AddJobPageState extends State<AddJobPage> {
                       ReusableTextField(
                         text: 'المسمى الوظيفي',
                         isPasswordField: false,
+                        isEnabled: true,
                         onChangedFunc: (value) {
                           _formKey.currentState?.validate();
                           setState(() {
@@ -85,6 +89,7 @@ class _AddJobPageState extends State<AddJobPage> {
                       ReusableTextField(
                         text: 'تفاصيل الوظيفة',
                         isPasswordField: false,
+                        isEnabled: true,
                         onChangedFunc: (value) {
                           _formKey.currentState?.validate();
                           setState(() {
@@ -103,6 +108,7 @@ class _AddJobPageState extends State<AddJobPage> {
                       ReusableTextField(
                         text: 'البريد الإلكتروني',
                         isPasswordField: false,
+                        isEnabled: true,
                         onChangedFunc: (value) {
                           _formKey.currentState?.validate();
                           setState(() {
@@ -118,22 +124,87 @@ class _AddJobPageState extends State<AddJobPage> {
                           }
                         },
                       ),
-                      const SizedBox(height: 20,),
-                      ReusableTextField(
-                        text: 'تاريخ انتهاء عرض الوظيفة',
-                        isPasswordField: false,
-                        onChangedFunc: (value) {
-                          _formKey.currentState?.validate();
-                          setState(() {
-                            _exp = value;
-                          });
-                        },
-                        validationFunc: (String value) {
-                          if (value.isEmpty) {
-                            return 'please fill this field';
-                          }
-                        },
+                      const SizedBox(
+                        height: 20,
                       ),
+                      const Text('تاريخ انتهاء عرض الوظيفة'),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.27,
+                            //margin:const EdgeInsets.symmetric(horizontal: 5,vertical: 15),
+                            child: ReusableTextField(
+                              text: 'اليوم',
+                              isPasswordField: false,
+                              isEnabled: true,
+                              onChangedFunc: (value) {
+                                _formKey.currentState?.validate();
+                                setState(() {
+                                  _dayExp = value;
+                                });
+                              },
+                              validationFunc: (String value) {
+                                if (value.isEmpty) {
+                                  return 'please fill this field';
+                                }
+                              },
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) =>
+                                      _buildMonthsSheet(context));
+                            },
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.27,
+                              // margin:const EdgeInsets.symmetric(horizontal: 5,vertical: 15),
+                              child: ReusableTextField(
+                                text: _monthExp,//'الشهر',
+                                isPasswordField: false,
+                                isEnabled: false,
+                                onChangedFunc: (value) {
+                                  _formKey.currentState?.validate();
+                                  setState(() {
+                                    _monthExp = value;
+                                  });
+                                },
+                                validationFunc: (String value) {
+                                  if (_monthExp=='الشهر') {
+                                    return 'please fill this field';
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.27,
+                            // margin:const EdgeInsets.symmetric(horizontal: 5,vertical: 15),
+                            child: ReusableTextField(
+                              text: 'السنة',
+                              isPasswordField: false,
+                              isEnabled: true,
+                              onChangedFunc: (value) {
+                                _formKey.currentState?.validate();
+                                setState(() {
+                                  _yearExp = value;
+                                });
+                              },
+                              validationFunc: (String value) {
+                                if (value.isEmpty) {
+                                  return 'please fill this field';
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+
                     ],
                   ),
                 ),
@@ -145,12 +216,34 @@ class _AddJobPageState extends State<AddJobPage> {
                     ReUsableButton(
                         text: 'إكمال تعبئة البيانات',
                         onPressButton: () async {
-                          if (_formKey.currentState!.validate()) {
-                            //todo get author
+                          //todo :check from month field
+                           if(_monthExp!='الشهر'){
+                             alert(context, 'there is an error,please choose a month');
+                           }
+                           else if (_formKey.currentState!.validate()) {
+                            _exp = '$_dayExp $_monthExp $_yearExp';
+                            String author = await getIdFromPref();
+                            if(author==''){
+                              // ignore: use_build_context_synchronously
+                              alert(context, 'there is an error,please login');
+                            }
+                            else{
                             var response = await addJob(
-                                'user_id', _title, _email, _content, _exp);
-                          }
-                        }),
+                                author, _title, _email, _content, _exp);
+                            if(response=={"msg": "Access denied"}){
+                              // ignore: use_build_context_synchronously
+                              alert(context, 'there is an error,please login');
+                            }
+                            else{
+                              int jobId=response['job_id'];
+                              var kRedirectEditJobUrl = "https://wzifaa.com/wp-json/v1/jobs/redirect/?job_id=$jobId";
+                              if (await canLaunch(kRedirectEditJobUrl)) {
+                                await launch( kRedirectEditJobUrl, universalLinksOnly: true, );
+                              } else { throw 'There was a problem to open the url: $kRedirectEditJobUrl'; }
+                            }
+                          }}
+                        }
+                        ),
                     const SizedBox(
                       height: 15,
                     ),
@@ -163,4 +256,114 @@ class _AddJobPageState extends State<AddJobPage> {
       ),
     );
   }
+  List months = <String>[
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  SizedBox _buildMonthsSheet(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height*0.5,
+      //padding: const EdgeInsets.all(10),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 50,
+              color: kBasicColor,
+              child: const Center(
+                child: Text('اختر أحد الأشهر',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              margin:const EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+                height: MediaQuery.of(context).size.height*0.38,
+              child: ListView.builder(
+                  itemCount:months.length ,
+                  itemBuilder: (context, index) =>Container(
+                      padding:const EdgeInsets.all(10),
+                      child: InkWell(
+                        onTap: (){
+                          setState(() {
+                            _monthExp=months[index];
+                            Navigator.pop(context);
+                          });
+                        },
+                        child: Text(months[index],
+                        style: const TextStyle(fontSize: 18),
+                        ),
+                      ),
+                  ) )
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
+
+
+// Stack(
+//   alignment: Alignment.center,
+//   children: [
+//     Container(
+//       width:20,
+//       decoration: const ShapeDecoration(
+//         color: Colors.white,
+//         shape: RoundedRectangleBorder(
+//           side: BorderSide(width: 1.0, style: BorderStyle.solid,color: Colors.white),
+//           borderRadius: BorderRadius.all(Radius.circular(10.0)),
+//         ),
+//       ),),
+//       SizedBox(
+//         width: 25,
+//         child: ButtonTheme(
+//           alignedDropdown: true,
+//           child: DropdownButton<String>(
+//             items: <String>[
+//               'Category 1',
+//               'Category 2',
+//               'Category 3',
+//               'Category 4'
+//             ].map((String value) {
+//               return DropdownMenuItem<String>(
+//                 value: value,
+//                 child: Text(value),
+//               );
+//             }).toList(),
+//             hint: Text(_monthExp.isEmpty
+//                 ? 'Category Food'
+//                 : _monthExp),
+//             borderRadius: BorderRadius.circular(10),
+//             underline: const SizedBox(),
+//             //isExpanded: true,
+//
+//             onChanged: (value) {
+//               if (value != null) {
+//                 setState(() {
+//                   _monthExp = value;
+//                 });
+//               }
+//             },
+//           ),
+//         ),
+//       ),
+//   ],
+// ),

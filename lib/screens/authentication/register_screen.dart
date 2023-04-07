@@ -67,6 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ReusableTextField(
                           text: 'الاسم',
                           isPasswordField: false,
+                          isEnabled: true,
                           onChangedFunc: (value) {
                             _formKey.currentState?.validate();
                             setState(() {
@@ -83,6 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ReusableTextField(
                           text: 'البريد الإلكتروني',
                           isPasswordField: false,
+                          isEnabled: true,
                           onChangedFunc: (value) {
                             _formKey.currentState?.validate();
                             setState(() {
@@ -114,6 +116,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ReusableTextField(
                           text: 'كلمة المرور',
                           isPasswordField: true,
+                          isEnabled: true,
                           onChangedFunc: (value) {
                             _formKey.currentState?.validate();
                             setState(() {
@@ -135,6 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ReusableTextField(
                           text: 'أعد إدخال كلمة المرور',
                           isPasswordField: true,
+                          isEnabled: true,
                           onChangedFunc: (value) {
                             _formKey.currentState?.validate();
                             setState(() {
