@@ -34,9 +34,6 @@ class _MorePageState extends State<MorePage> {
     setState(() {
       profileInfoMap = p;
       isUserInfoFetched = true;
-      print(id);
-      print(role);
-      print(profileInfoMap);
     });
   }
 
@@ -117,18 +114,23 @@ class _MorePageState extends State<MorePage> {
                   height: MediaQuery.of(context).size.height,
                   child: Column(
                     children: [
-                      ReusableOptionCard(
-                        icon: Icons.person_outline,
-                        text: 'الحساب الشخصي',
-                        onTapFunction: () {
-                          Navigator.pushNamed(context, '/profile',arguments: {
-                            'user_name':profileInfoMap['user_name'],
-                            'user_email':profileInfoMap['user_email'],
-                            'user_phone':profileInfoMap['user_phone']??'',
-                            'ID':profileInfoMap['ID'],
-                          });
-                        },
-                      ),
+                      profileInfoMap['ID'] == ''
+                          ? const SizedBox()
+                          : ReusableOptionCard(
+                              icon: Icons.person_outline,
+                              text: 'الحساب الشخصي',
+                              onTapFunction: () {
+                                Navigator.pushNamed(context, '/profile',
+                                    arguments: {
+                                      'user_name': profileInfoMap['user_name'],
+                                      'user_email':
+                                          profileInfoMap['user_email'],
+                                      'user_phone':
+                                          profileInfoMap['user_phone'] ?? '',
+                                      'ID': profileInfoMap['ID'],
+                                    });
+                              },
+                            ),
                       ReusableOptionCard(
                         icon: Icons.event_note,
                         text: 'السير الذاتية',

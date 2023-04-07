@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:wazefaa/consts/colors.dart';
 import 'package:wazefaa/widgets/reusable_review_row.dart';
 import 'package:wazefaa/widgets/reusable_share_button.dart';
-
+import 'package:share_plus/share_plus.dart';
 class ReusableCvCard extends StatelessWidget {
   const ReusableCvCard({
     Key? key, required this.id, required this.title, required this.userName, required this.location, required this.review, required this.image,
@@ -28,8 +27,10 @@ class ReusableCvCard extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: const [
-              ReusableShareButton(),
+            children: [
+              ReusableShareButton(shareFunction: (){
+                Share.share('https://wzifaa.com/candidates-cv/?page_id=$id') ;
+              }),
             ],
           ),
           const SizedBox(
