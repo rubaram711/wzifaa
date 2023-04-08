@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wazefaa/consts/colors.dart';
+import 'package:wazefaa/widgets/reusable_alert.dart';
 import 'package:wazefaa/widgets/reusable_review_row.dart';
 import 'package:wazefaa/widgets/reusable_share_button.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../backend/save_favorite_locally.dart';
 class ReusableCvCard extends StatelessWidget {
   const ReusableCvCard({
     Key? key, required this.id, required this.title, required this.userName, required this.location, required this.review, required this.image, required this.date,
@@ -102,7 +105,18 @@ class ReusableCvCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ReusableReviewRow(review: review,),
-              IconButton(icon:const Icon(Icons.favorite_border,size: 17,),onPressed: (){},)
+              IconButton(icon:const Icon(Icons.favorite_border,size: 17,),onPressed: ()async{
+                await addCVToSP({
+                  'id': id,
+                  'title': title,
+                  'date': date,
+                  'userName': userName,
+                  'location': location,
+                  'review': review,
+                  'image': image,
+                });
+                alert(context, 'تم الحفظ الى المفضلة');
+              },)
             ],
           )
         ],

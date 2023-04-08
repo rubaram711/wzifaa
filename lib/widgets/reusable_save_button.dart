@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:wazefaa/consts/colors.dart';
 class ReusableSaveButton extends StatelessWidget {
-  const ReusableSaveButton({Key? key}) : super(key: key);
-
+  const ReusableSaveButton({Key? key, required this.onPress}) : super(key: key);
+  final Function onPress;
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){},
+      onTap: (){
+        onPress();
+      },
       child: Row(
         children: const[
            Icon(

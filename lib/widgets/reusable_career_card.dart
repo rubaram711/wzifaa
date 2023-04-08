@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:wazefaa/consts/colors.dart';
+import 'package:wazefaa/widgets/reusable_alert.dart';
 import 'package:wazefaa/widgets/reusable_review_row.dart';
 import 'package:wazefaa/widgets/reusable_save_button.dart';
 import 'package:wazefaa/widgets/reusable_share_button.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../backend/save_favorite_locally.dart';
 
 class ReusableCareerCard extends StatelessWidget {
   const ReusableCareerCard({
@@ -40,7 +43,19 @@ class ReusableCareerCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const ReusableSaveButton(),
+              ReusableSaveButton(onPress: ()async{
+                await addJobToSP({
+                  'id': id,
+                  'title': title,
+                  'date':date,
+                  'company': company,
+                  'location': location,
+                  'views': views,
+                  'content': content,
+                  'logo': logo
+                });
+                alert(context, 'تم حفظ الوظيفة الى المفضلة');
+              }),
               const SizedBox(
                 width: 20,
               ),

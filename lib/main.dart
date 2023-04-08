@@ -10,6 +10,7 @@ import 'package:wazefaa/screens/career_details_page.dart';
 import 'package:wazefaa/screens/company_details.dart';
 import 'package:wazefaa/screens/contact_us_page.dart';
 import 'package:wazefaa/screens/custom_splash_screen.dart';
+import 'package:wazefaa/screens/favorate_pages/favorite_page.dart';
 import 'package:wazefaa/screens/home_page.dart';
 import 'package:wazefaa/screens/profile-page.dart';
 
@@ -25,7 +26,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        theme: ThemeData(primarySwatch: Colors.indigo, fontFamily: 'Cairo'),
+        theme: ThemeData(
+            primarySwatch: Colors.indigo, fontFamily: 'Cairo',
+        tabBarTheme: const TabBarTheme(
+            labelStyle: TextStyle(color: Colors.white), // color for text
+            indicator: UnderlineTabIndicator( // color for indicator (underline)
+                borderSide: BorderSide(color:Colors.white))),
+        ),
         routes: {
           '/login': (context) => const LoginScreen(),
           '/register': (context) => const RegisterScreen(),
@@ -39,7 +46,7 @@ class MyApp extends StatelessWidget {
           '/forget_password': (context) => const ForgetPasswordScreen(),
           '/add_job':(context)=>const AddJobPage(),
           '/add_cv':(context)=>const AddCvPage(),
-         // '/ShareMe':(context)=>  ShareMe(title: '',)
+          '/favorite':(context)=>const  FavoritePage(),
         },
         home: const SplashScreen());
   }

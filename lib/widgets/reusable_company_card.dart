@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wazefaa/backend/save_favorite_locally.dart';
 import 'package:wazefaa/consts/colors.dart';
+import 'package:wazefaa/widgets/reusable_alert.dart';
 import 'package:wazefaa/widgets/reusable_rating_row.dart';
 import 'package:wazefaa/widgets/reusable_save_button.dart';
 import 'package:wazefaa/widgets/reusable_share_button.dart';
@@ -43,7 +45,20 @@ class ReusableCompanyCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const ReusableSaveButton(),
+               ReusableSaveButton(onPress: ()async{
+                   await addCompanyToSP({
+                     'id': id,
+                     'title': title,
+                     'date': date,
+                     'jobsCount': jobsCount,
+                     'rating': rating,
+                     'review': review,
+                     'content': content,
+                     'logo': logo
+                   });
+                   alert(context, 'تم الحفظ الى المفضلة');
+                 },
+               ),
               const SizedBox(
                 width: 20,
               ),
