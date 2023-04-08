@@ -81,33 +81,35 @@ class _CompaniesPageState extends State<CompaniesPage> {
                         child: CircularProgressIndicator(),
                       );
                     } else {
-                      var id = companiesList[index]['ID'];
-                      var title = companiesList[index]['post_title'];
-                      var content = companiesList[index]['post_content'];
+                      var id = companiesList[index]['ID']??'';
+                      var title = companiesList[index]['post_title']??'';
+                      var date = companiesList[index]['post_date']??'';
+                      var content = companiesList[index]['post_content']??'';
                       var jobsCount = '', rating = '', review = '';
                       for (int i = 0; i < companiesList[index]['tags'].length; i++) {
                         if (companiesList[index]['tags'][i]['meta_key'] ==
                             '_noo_job_count') {
                           jobsCount =
-                              companiesList[index]['tags'][i]['meta_value'];
+                              companiesList[index]['tags'][i]['meta_value']??'';
                         }
                         if (companiesList[index]['tags'][i]['meta_key'] ==
                             '_noo_average_rating') {
                           rating =
-                              companiesList[index]['tags'][i]['meta_value'];
+                              companiesList[index]['tags'][i]['meta_value']??'';
                         }
                         if (companiesList[index]['tags'][i]['meta_key'] ==
                             'total_review') {
                           review =
-                              companiesList[index]['tags'][i]['meta_value'];
+                              companiesList[index]['tags'][i]['meta_value']??'';
                         }
                       }
                       return ReusableCompanyCard(
                         isWeInDetailsPage: false,
                         id: id,
                         title: title,
+                        date:date,
                         jobsCount: jobsCount,
-                        rating: rating,
+                        rating: rating.substring(0,1),
                         review: review,
                         content: content,
                         logo: 'assets/images/logo_circle.png',

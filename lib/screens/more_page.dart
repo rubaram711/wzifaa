@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-// import 'package:share_plus/share_plus.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:wazefaa/backend/save_user_info_locally.dart';
-
 import '../backend/get_user_by_id.dart';
 import '../consts/colors.dart';
 import '../widgets/reusable_option_card.dart';
+import 'authentication/login_screen.dart';
 
 class MorePage extends StatefulWidget {
   const MorePage({Key? key}) : super(key: key);
@@ -27,13 +27,23 @@ class _MorePageState extends State<MorePage> {
 
   Map profileInfoMap = {};
   bool isUserInfoFetched = false;
+  bool isThisVisitor = false;
+  bool showPageContent = false;
   getUserInfo() async {
     await getInfoFromPref();
-    Map p = await getUserById(id);
-
+    if (id != '') {
+      Map p = await getUserById(id);
+      setState(() {
+        profileInfoMap = p;
+        isUserInfoFetched = true;
+      });
+    } else {
+      setState(() {
+        isThisVisitor = true;
+      });
+    }
     setState(() {
-      profileInfoMap = p;
-      isUserInfoFetched = true;
+      showPageContent = true;
     });
   }
 
@@ -48,7 +58,7 @@ class _MorePageState extends State<MorePage> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: isUserInfoFetched
+      child: showPageContent
           ? Scaffold(
               backgroundColor: kOfWhiteBgColor,
               appBar: AppBar(
@@ -63,33 +73,41 @@ class _MorePageState extends State<MorePage> {
                     CircleAvatar(
                       backgroundColor: Colors.white,
                       radius: 25,
-                      child: ClipOval(
-                          child: Image.asset(
-                        'assets/images/profile.jpg',
-                        fit: BoxFit.cover,
-                        height: 50,
-                        width: 50,
-                      )),
+                      child: isThisVisitor
+                          ? ClipOval(
+                              child: Image.asset(
+                              'assets/images/user_icon.png',
+                              fit: BoxFit.cover,
+                              height: 50,
+                              width: 50,
+                            ))
+                          : ClipOval(
+                              child: Image.asset(
+                              'assets/images/profile.jpg',
+                              fit: BoxFit.cover,
+                              height: 50,
+                              width: 50,
+                            )),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      //crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           'مرحبا,',
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
-                        Text(
-                          profileInfoMap != {}
-                              ? profileInfoMap['user_name']
-                              : 'user',
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        isThisVisitor
+                            ? const SizedBox()
+                            : Text(
+                                profileInfoMap['user_name'],
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
                       ],
                     ),
                   ],
@@ -99,7 +117,10 @@ class _MorePageState extends State<MorePage> {
                 actions: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/');
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const LoginScreen()),
+                            (Route<dynamic> route) => false);
                       },
                       icon: const Icon(
                         Icons.logout,
@@ -114,7 +135,7 @@ class _MorePageState extends State<MorePage> {
                   height: MediaQuery.of(context).size.height,
                   child: Column(
                     children: [
-                      profileInfoMap['ID'] == ''
+                      isThisVisitor
                           ? const SizedBox()
                           : ReusableOptionCard(
                               icon: Icons.person_outline,
@@ -138,7 +159,7 @@ class _MorePageState extends State<MorePage> {
                           Navigator.pushNamed(context, '/CVs');
                         },
                       ),
-                      role == 'employer'
+                      role == 'employer'|| !isThisVisitor
                           ? ReusableOptionCard(
                               icon: Icons.add_comment,
                               text: 'إضافة وظيفة',
@@ -155,6 +176,13 @@ class _MorePageState extends State<MorePage> {
                         },
                       ),
                       ReusableOptionCard(
+                        icon: Icons.favorite_border,
+                        text: 'المفضلة',
+                        onTapFunction: () {
+                          Navigator.pushNamed(context, '/favorite');
+                        },
+                      ),
+                      ReusableOptionCard(
                         icon: Icons.phone,
                         text: 'تواصل معنا',
                         onTapFunction: () {
@@ -165,14 +193,14 @@ class _MorePageState extends State<MorePage> {
                         icon: Icons.share,
                         text: 'مشاركة التطبيق',
                         onTapFunction: () {
-                          //Share.share('com.example.wazefaa') ;
-                          Navigator.pushNamed(context, '/ShareMe');
+                          Share.share(
+                              'https://play.google.com/store/apps/details?id=com.wzifaa.app');
                         },
                       ),
                     ],
                   )),
             )
-          : SizedBox(),
+          : const SizedBox(),
     );
   }
 }

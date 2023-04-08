@@ -4,7 +4,7 @@ import '../backend/get_jobs.dart';
 import '../consts/colors.dart';
 import '../widgets/logo.dart';
 import '../widgets/reusable_career_card.dart';
-
+String countrySelected = '';
 class CarrerasByCountryPage extends StatefulWidget {
   const CarrerasByCountryPage({Key? key}) : super(key: key);
 
@@ -15,7 +15,7 @@ class CarrerasByCountryPage extends StatefulWidget {
 class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
   List carrerasByCountryList = [];
 //todo:make carrerasByCountryList empty after choosing country
-  String countrySelected = '';
+
   int from = 0;
   int length = 10;
   bool isLoadMore = false;
@@ -127,40 +127,41 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                                   child: CircularProgressIndicator(),
                                 );
                               } else {
-                                var id = carrerasByCountryList[index]['ID'];
+                                var id = carrerasByCountryList[index]['ID']??'';
                                 var title =
-                                    carrerasByCountryList[index]['post_title'];
+                                    carrerasByCountryList[index]['post_title']??'';
                                 var content = carrerasByCountryList[index]
-                                    ['post_content'];
-                                var company =
-                                    carrerasByCountryList[index]['company'];
+                                    ['post_content']??'';
+                                var postDate = carrerasByCountryList[index]['post_date']??'';
+                                var companyName ='';
                                 var location = '', views = '';
-                                for (int i = 0;
-                                    i <
-                                        carrerasByCountryList[index]['Array']
-                                            .length;
-                                    i++) {
-                                  if (carrerasByCountryList[index]['Array'][i]
-                                          ['meta_key'] ==
-                                      '_location') {
-                                    location = carrerasByCountryList[index]
-                                        ['Array'][i]['meta_value'];
+                                for (int i = 0; i < carrerasByCountryList[index]['Array'].length; i++) {
+                                  if (carrerasByCountryList[index]['Array'][i]['meta_key'] == 'custom-company-name') {
+                                    companyName = carrerasByCountryList[index]['Array'][i]['meta_value']??'';
+                                  //  var company_Id = carrerasByCountryList[index]['Array'][i]['post_id']??'';
                                   }
                                   if (carrerasByCountryList[index]['Array'][i]
                                           ['meta_key'] ==
                                       '_noo_views_count') {
                                     views = carrerasByCountryList[index]
-                                        ['Array'][i]['meta_value'];
+                                        ['Array'][i]['meta_value']??'';
                                   }
                                 }
+                                for (int i = 0; i < carrerasByCountryList[index]['tags'].length; i++) {
+                                  if (carrerasByCountryList[index]['tags'][i]['taxonomy'] == 'job_location') {
+                                    location = carrerasByCountryList[index]['tags'][i]['name']??'';
+                                  }
+                                }
+
                                 return ReusableCareerCard(
                                   isWeInDetailsPage: false,
                                   id: id,
                                   title: title,
+                                  date:postDate,
                                   location: location,
                                   views: views,
                                   content: content,
-                                  company: company,
+                                  company: companyName,
                                   logo: '',
                                 );
                               }

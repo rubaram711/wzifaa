@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../backend/update_user_info.dart';
 import '../consts/colors.dart';
+import '../widgets/reusable_alert.dart';
 import '../widgets/reusable_button.dart';
 import '../widgets/reusable_text_field.dart';
 
@@ -23,9 +24,6 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-      // _username = args!['user_name'];
-      // _email = args['user_email'];
-      // _phone = args['user_phone'];
     return Scaffold(
       backgroundColor: kOfWhiteBgColor,
       appBar: AppBar(
@@ -112,7 +110,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     onChangedFunc: (value) {
                       setState(() {
                         _username = value;
-                        print(_username);
                       });
                     },
                     text: 'اسم المستخدم'),
@@ -124,8 +121,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     onChangedFunc: (value) {
                       setState(() {
                         _phone = value.toString();
-                        print(_phone);
-                        print(_username);
                       });
                     },
                     text: 'رقم الهاتف'),
@@ -146,10 +141,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 ReUsableButtonWithRoundedCorner(
                   text: 'حفظ',
                   onPressButton: () async {
-                    print(_phone);
+                    //{msg: updated}
+
                     _id = args['ID'];
                     var response =
                         await updateUserInfo(_id, _email, _username, _phone);
+                    if(response=={'msg': 'updated'}){
+                      // ignore: use_build_context_synchronously
+                      alert(context, 'تم التعديل بنجاح');
+                    }
+                    else{
+                      // ignore: use_build_context_synchronously
+                      alert(context, 'فشل التعديل جرب إعادة تسجيل الدخول');
+                    }
                   },
                 )
               ]),

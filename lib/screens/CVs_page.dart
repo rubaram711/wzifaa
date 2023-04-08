@@ -12,36 +12,7 @@ class CVsPage extends StatefulWidget {
 }
 
 class _CVsPageState extends State<CVsPage> {
-  List cvsList = [
-    //   {
-    //   'image':'assets/images/profile.jpg',
-    //   'name':'سامي حمد',
-    //   'jop':'Product Designer',
-    //   'location': 'الامارات العربية المتحدة',
-    //   'review':'21'
-    // },
-    // {
-    //   'image':'assets/images/profile.jpg',
-    //   'name':'سامي حمد',
-    //   'jop':'Product Designer',
-    //   'location': 'الامارات العربية المتحدة',
-    //   'review':'21'
-    // },
-    // {
-    //   'image':'assets/images/profile.jpg',
-    //   'name':'سامي حمد',
-    //   'jop':'Product Designer',
-    //   'location': 'الامارات العربية المتحدة',
-    //   'review':'21'
-    // },
-    // {
-    //   'image':'assets/images/profile.jpg',
-    //   'name':'سامي حمد',
-    //   'jop':'Product Designer',
-    //   'location': 'الامارات العربية المتحدة',
-    //   'review':'21'
-    // },
-  ];
+  List cvsList = [];
   int from = 0;
   int length = 10;
   bool isLoadMore = false;
@@ -111,34 +82,27 @@ class _CVsPageState extends State<CVsPage> {
                         var id = '', title = '';
                         id = cvsList[index]['ID'];
                         title = cvsList[index]['post_title'];
+                        String date=cvsList[index]['post'][0]['post_date']??'';
                         var userName = '';
                         var location = '', review = '';
-                        for (int i = 0;
-                            i < cvsList[index]['usermeta'].length;
-                            i++) {
-                          if (cvsList[index]['usermeta'][i]['meta_user_key'] ==
-                              'nickname') {
-                            userName = cvsList[index]['usermeta'][i]
-                                ['meta_user_value'];
+                        for (int i = 0; i < cvsList[index]['usermeta'].length; i++) {
+                          if (cvsList[index]['usermeta'][i]['meta_user_key'] == 'nickname') {
+                            userName = cvsList[index]['usermeta'][i]['meta_user_value'];
                           }
                         }
-                        for (int i = 0;
-                            i < cvsList[index]['postmeta'].length;
-                            i++) {
-                          if (cvsList[index]['postmeta'][i]['meta_key'] ==
-                              '_job_location') {
-                            location =
-                                cvsList[index]['postmeta'][i]['meta_value'];
-                          }
-                          if (cvsList[index]['postmeta'][i]['meta_key'] ==
-                              '"_noo_views_count') {
+                        for (int i = 0; i < cvsList[index]['postmeta'].length; i++) {
+                          if (cvsList[index]['postmeta'][i]['meta_key'] == '_job_location') {
+                            location = cvsList[index]['postmeta'][i]['meta_value'];}
+                          if (cvsList[index]['postmeta'][i]['meta_key'] == '"_noo_views_count') {
                             review =
                                 cvsList[index]['postmeta'][i]['meta_value'];
                           }
                         }
+
                         return ReusableCvCard(
                           id: id,
                           title: title,
+                          date:date,
                           userName: userName,
                           location: location,
                           review: review,

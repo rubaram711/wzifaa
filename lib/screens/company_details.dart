@@ -35,6 +35,7 @@ class CompanyDetails extends StatelessWidget {
                     ReusableCompanyCard(
                         id: args!['id'],
                         title: args['title'],
+                        date: args['date'],
                         content: args['content'],
                         rating: args['rating'],
                         review: args['review'],

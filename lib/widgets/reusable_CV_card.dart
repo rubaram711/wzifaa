@@ -5,7 +5,7 @@ import 'package:wazefaa/widgets/reusable_share_button.dart';
 import 'package:share_plus/share_plus.dart';
 class ReusableCvCard extends StatelessWidget {
   const ReusableCvCard({
-    Key? key, required this.id, required this.title, required this.userName, required this.location, required this.review, required this.image,
+    Key? key, required this.id, required this.title, required this.userName, required this.location, required this.review, required this.image, required this.date,
 
   }) : super(key: key);
  final String id;
@@ -14,6 +14,7 @@ class ReusableCvCard extends StatelessWidget {
   final String location;
   final String review;
   final String image;
+  final String date;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,7 +70,9 @@ class ReusableCvCard extends StatelessWidget {
                     const SizedBox(
                       width: 5,
                     ),
-                    Text(title),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width*0.55,
+                        child: Text(title)),
                   ],),
                   const SizedBox(
                     height: 3,
@@ -81,6 +84,16 @@ class ReusableCvCard extends StatelessWidget {
                     ),
                     Text(location),
                   ],),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  Row(children: [
+                    Icon(Icons.calendar_month,size: 17,color: Colors.grey[700],),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(date.substring(0,10))
+                  ],)
                 ],
               ),
             ],

@@ -2,9 +2,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 saveUserInfoLocally(String token, String role, String id) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString('token', token);
-  prefs.setString('role', role);
-  prefs.setString('ID', id);
+  prefs.setString('token', token) ??'';
+  prefs.setString('role', role)??'';
+  prefs.setString('ID', id)??'';
 }
 
 Future<Map> getUserInfoFromPref() async {

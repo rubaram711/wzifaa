@@ -34,6 +34,7 @@ class CareerDetails extends StatelessWidget {
               ReusableCareerCard(
                   id: args['id'],
                   title: args['title'],
+                  date: args['date'],
                   content: args['content'],
                   company: args['company'],
                   location: args['location'],

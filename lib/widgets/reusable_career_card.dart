@@ -15,11 +15,12 @@ class ReusableCareerCard extends StatelessWidget {
     required this.views,
     required this.content,
     required this.logo,
-    required this.company,
+    required this.company, required this.date,
   }) : super(key: key);
   final bool isWeInDetailsPage;
   final String id;
   final String title;
+  final String date;
   final String company;
   final String location;
   final String views;
@@ -55,6 +56,7 @@ class ReusableCareerCard extends StatelessWidget {
                   : Navigator.pushNamed(context, '/career_details', arguments: {
                 'id': id,
                 'title': title,
+                'date':date,
                 'company': company,
                 'location': location,
                 'views': views,
@@ -100,10 +102,22 @@ class ReusableCareerCard extends StatelessWidget {
                         ),
                         isWeInDetailsPage
                             ? const SizedBox()
-                            : const Text('وظائف شاغرة'),
+                            :  Row(children: [
+                          Icon(Icons.calendar_month,size: 17,color: Colors.grey[700],),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(date.substring(0,10))
+                        ],),
                         const SizedBox(
                           height: 7,
                         ),
+                        // isWeInDetailsPage
+                        //     ? const SizedBox()
+                        //     : const Text('وظائف شاغرة'),
+                        // const SizedBox(
+                        //   height: 7,
+                        // ),
                         Row(
                           children: [
                             Icon(

@@ -4,7 +4,7 @@ import 'package:wazefaa/consts/colors.dart';
 
 class ReusablePostCard extends StatelessWidget {
   const ReusablePostCard({
-    Key? key, required this.id, required this.title, required this.authorName, required this.content, required this.image,
+    Key? key, required this.id, required this.title, required this.authorName, required this.content, required this.image, required this.postDate,
 
   }) : super(key: key);
   final String id;
@@ -12,6 +12,7 @@ class ReusablePostCard extends StatelessWidget {
   final String authorName;
   final String content;
   final String image;
+  final String postDate;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,7 +47,7 @@ class ReusablePostCard extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
-                const Text('14 فبراير 2023')
+                 Text(postDate.substring(0,10))
               ],)
             ],
           ),

@@ -12,6 +12,7 @@ class ReusableCompanyCard extends StatelessWidget {
     required this.isWeInDetailsPage,
     required this.id,
     required this.title,
+    required this.date,
     required this.jobsCount,
     required this.rating,
     required this.review,
@@ -22,6 +23,7 @@ class ReusableCompanyCard extends StatelessWidget {
   final bool isWeInDetailsPage;
   final String id;
   final String title;
+  final String date;
   final String jobsCount;
   final String rating;
   final String review;
@@ -57,6 +59,7 @@ class ReusableCompanyCard extends StatelessWidget {
                   : Navigator.pushNamed(context, '/company_details', arguments: {
                 'id': id,
                 'title': title,
+                'date': date,
                 'jobsCount': jobsCount,
                 'rating': rating,
                 'review': review,
@@ -106,6 +109,18 @@ class ReusableCompanyCard extends StatelessWidget {
                                 : Text('(Review $review)'),
                           ],
                         ),
+                        const SizedBox(
+                          height: 7,
+                        ),
+                        isWeInDetailsPage
+                            ? const SizedBox()
+                            :  Row(children: [
+                          Icon(Icons.calendar_month,size: 17,color: Colors.grey[700],),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(date.substring(0,10))
+                        ],),
                         const SizedBox(
                           height: 7,
                         ),

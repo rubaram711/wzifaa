@@ -12,7 +12,6 @@ import 'package:wazefaa/screens/contact_us_page.dart';
 import 'package:wazefaa/screens/custom_splash_screen.dart';
 import 'package:wazefaa/screens/home_page.dart';
 import 'package:wazefaa/screens/profile-page.dart';
-import 'package:wazefaa/screens/share_my_app.dart';
 
 void main() {
   runApp(const MyApp());

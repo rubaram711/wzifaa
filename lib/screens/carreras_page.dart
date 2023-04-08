@@ -23,6 +23,7 @@ class _CarrerasPageState extends State<CarrerasPage> {
   bool isDataFetched = false;
   ScrollController scrollController = ScrollController();
   fetchData() async {
+    // ignore: prefer_typing_uninitialized_variables
     var p;
     if (typeSelected.isNotEmpty) {
       p = await getJobsByCCT('', '', typeSelected, '', from, length);
@@ -57,7 +58,6 @@ class _CarrerasPageState extends State<CarrerasPage> {
   @override
   void initState() {
     typeSelected==''? fetchData():fetchData();
-    print('kzknvdllnnvnnvnvnn $typeSelected');
     super.initState();
   }
 
@@ -136,36 +136,34 @@ class _CarrerasPageState extends State<CarrerasPage> {
                                   child: CircularProgressIndicator(),
                                 );
                               } else {
-                                var id = carrerasList[index]['ID'];
-                                var title = carrerasList[index]['post_title'];
-                                var content =
-                                    carrerasList[index]['post_content'];
-                                var company = carrerasList[index]['company'];
+                                var id = carrerasList[index]['ID'] ?? '';
+                                var title = carrerasList[index]['post_title']??'';
+                                var content = carrerasList[index]['post_content']??'';
+                                var postDate = carrerasList[index]['post_date']??'';
+                                var companyName ='';
                                 var location = '', views = '';
-                                for (int i = 0;
-                                    i < carrerasList[index]['Array'].length;
-                                    i++) {
-                                  if (carrerasList[index]['Array'][i]
-                                          ['meta_key'] ==
-                                      '_location') {
-                                    location = carrerasList[index]['Array'][i]
-                                        ['meta_value'];
+                                for (int i = 0; i < carrerasList[index]['Array'].length; i++) {
+                                  if (carrerasList[index]['Array'][i]['meta_key'] == 'custom-company-name') {
+                                    companyName = carrerasList[index]['Array'][i]['meta_value']??'';
                                   }
-                                  if (carrerasList[index]['Array'][i]
-                                          ['meta_key'] ==
-                                      '_noo_views_count') {
-                                    views = carrerasList[index]['Array'][i]
-                                        ['meta_value'];
+                                  if (carrerasList[index]['Array'][i]['meta_key'] == '_noo_views_count') {
+                                    views = carrerasList[index]['Array'][i]['meta_value']??'';
+                                  }
+                                }
+                                for (int i = 0; i < carrerasList[index]['tags'].length; i++) {
+                                  if (carrerasList[index]['tags'][i]['taxonomy'] == 'job_location') {
+                                    location = carrerasList[index]['tags'][i]['name']??'';
                                   }
                                 }
                                 return ReusableCareerCard(
                                   isWeInDetailsPage: false,
                                   id: id,
                                   title: title,
+                                  date:postDate,
                                   location: location,
                                   views: views,
                                   content: content,
-                                  company: company,
+                                  company: companyName,
                                   logo: '',
                                 );
                               }
@@ -285,7 +283,6 @@ class _BuildBottomSheetForCarrerasState
                       onChanged: (value) {
                         setState(() {
                           typeSelected = value;
-                          print(typeSelected);
                           Navigator.pop(context);
                         });
                       },

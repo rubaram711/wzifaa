@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:wazefaa/consts/URLs.dart';
 
 Future updateUserInfo(String id,String email, String username, String? phone) async {
-  final uri = Uri.parse(kAddJobUrl);
+  final uri = Uri.parse(kUpdateUserByIdUrl);
   String token=await getTokenFromPref();
   var response = await http.post(
     uri,
@@ -12,7 +12,7 @@ Future updateUserInfo(String id,String email, String username, String? phone) as
       'Authorization': 'Bearer $token',
     },
     body: jsonEncode(<String, dynamic>{
-      "id": id,
+      "ID": id,
       "email":email,
       "username": username,
       "phone": phone
