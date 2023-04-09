@@ -3,6 +3,7 @@ import 'package:wazefaa/consts/colors.dart';
 
 import '../backend/get_users(cv).dart';
 import '../widgets/reusable_CV_card.dart';
+import '../widgets/reusable_text_field.dart';
 
 class CVsPage extends StatefulWidget {
   const CVsPage({Key? key}) : super(key: key);
@@ -17,9 +18,10 @@ class _CVsPageState extends State<CVsPage> {
   int length = 10;
   bool isLoadMore = false;
   bool isDataFetched = false;
+  String search='';
   ScrollController scrollController = ScrollController();
   fetchData() async {
-    var p = await getUsers('', from, length);
+    var p = await getUsers(search, from, length);
     cvsList.addAll(p);
     scrollController.addListener(() async {
       if (isLoadMore) return;
@@ -63,58 +65,81 @@ class _CVsPageState extends State<CVsPage> {
           ),
         ),
       ),
-      body: isDataFetched
-          ? Directionality(
-              textDirection: TextDirection.rtl,
-              child: Container(
-                margin: const EdgeInsets.only(top: 5),
-                padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-                height: MediaQuery.of(context).size.height,
-                child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: isLoadMore ? cvsList.length + 1 : cvsList.length,
-                    itemBuilder: (context, index) {
-                      if (index >= cvsList.length) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else {
-                        var id = '', title = '';
-                        id = cvsList[index]['ID'];
-                        title = cvsList[index]['post_title'];
-                        String date=cvsList[index]['post'][0]['post_date']??'';
-                        var userName = '';
-                        var location = '', review = '';
-                        for (int i = 0; i < cvsList[index]['usermeta'].length; i++) {
-                          if (cvsList[index]['usermeta'][i]['meta_user_key'] == 'nickname') {
-                            userName = cvsList[index]['usermeta'][i]['meta_user_value'];
-                          }
-                        }
-                        for (int i = 0; i < cvsList[index]['postmeta'].length; i++) {
-                          if (cvsList[index]['postmeta'][i]['meta_key'] == '_job_location') {
-                            location = cvsList[index]['postmeta'][i]['meta_value'];}
-                          if (cvsList[index]['postmeta'][i]['meta_key'] == '"_noo_views_count') {
-                            review =
-                                cvsList[index]['postmeta'][i]['meta_value'];
-                          }
-                        }
-
-                        return ReusableCvCard(
-                          id: id,
-                          title: title,
-                          date:date,
-                          userName: userName,
-                          location: location,
-                          review: review,
-                          image: '',
-                        );
-                      }
-                    }),
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                child: SearchTextField(
+                  text: 'أدخل الكلمة المفتاحية التي تبحث عنها',
+                  onChangedFunc: (value) {
+                    setState(() {
+                      search=value;
+                    });
+                  },
+                  onPressSearchIcon: () {
+                    setState(() {
+                      cvsList=[];
+                      isDataFetched=false;
+                    });
+                    fetchData();
+                  },
+                ),
               ),
-            )
-          : const Center(
-              child: CircularProgressIndicator(),
-            ),
+              isDataFetched
+                  ? Container(
+                    margin: const EdgeInsets.only(top: 5),
+                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                    height: MediaQuery.of(context).size.height*0.77,
+                    child: ListView.builder(
+                        controller: scrollController,
+                        itemCount: isLoadMore ? cvsList.length + 1 : cvsList.length,
+                        itemBuilder: (context, index) {
+                          if (index >= cvsList.length) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            var id = '', title = '';
+                            id = cvsList[index]['ID'];
+                            title = cvsList[index]['post_title'];
+                            String date=cvsList[index]['post'][0]['post_date']??'';
+                            var userName = '';
+                            var location = '', review = '';
+                            for (int i = 0; i < cvsList[index]['usermeta'].length; i++) {
+                              if (cvsList[index]['usermeta'][i]['meta_user_key'] == 'nickname') {
+                                userName = cvsList[index]['usermeta'][i]['meta_user_value'];
+                              }
+                            }
+                            for (int i = 0; i < cvsList[index]['postmeta'].length; i++) {
+                              if (cvsList[index]['postmeta'][i]['meta_key'] == '_job_location') {
+                                location = cvsList[index]['postmeta'][i]['meta_value'];}
+                              if (cvsList[index]['postmeta'][i]['meta_key'] == '"_noo_views_count') {
+                                review =
+                                    cvsList[index]['postmeta'][i]['meta_value'];
+                              }
+                            }
+
+                            return ReusableCvCard(
+                              id: id,
+                              title: title,
+                              date:date,
+                              userName: userName,
+                              location: location,
+                              review: review,
+                              image: '',
+                            );
+                          }
+                        }),
+                  )
+                  : const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -132,4 +132,85 @@ class ReusableTextFieldForProfile extends StatelessWidget {
 
 
 
+class SearchForJobTextField extends StatelessWidget {
+  const SearchForJobTextField({Key? key, required this.onChangedFunc, required this.text}) : super(key: key);
+  final Function onChangedFunc;
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return  SizedBox(
+      height: 50,
+      child: TextFormField(
+        textDirection:TextDirection.rtl,
+        cursorColor: kBasicColor,
+        style: const TextStyle(
+            color: Colors.black,
+            fontSize: 14
+        ),
+        decoration: InputDecoration(
+          hintText: text,
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.fromLTRB(5,0,26,5),
+          border: const OutlineInputBorder(
+            borderSide:BorderSide(color: Colors.white38),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+        ),
+        onChanged:(value){
+        onChangedFunc(value);
+        },
+      ),
+    );
+  }
+}
 
+
+class SearchTextField extends StatelessWidget {
+  const SearchTextField({Key? key, required this.onChangedFunc, required this.onPressSearchIcon, required this.text}) : super(key: key);
+  final Function onChangedFunc;
+  final Function onPressSearchIcon;
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding:const EdgeInsets.fromLTRB(8,8,8,0),
+      // height: 60,
+      child: TextFormField(
+        textDirection:TextDirection.rtl,
+        cursorColor: kBasicColor,
+        style: const TextStyle(
+            color: Colors.black,
+            fontSize: 14
+        ),
+        decoration: InputDecoration(
+          hintText:text,
+          labelStyle: TextStyle(
+              fontSize: 15,
+              color: Colors.grey[700]
+          ),
+          filled: true,
+          fillColor: Colors.white,
+          prefixIcon:
+          IconButton(
+            onPressed: (){
+              onPressSearchIcon();
+            },
+            icon:const Icon(
+              Icons.search,
+              color: kBasicColor,
+              size: 23,
+            ),
+          ),
+          contentPadding: const EdgeInsets.fromLTRB(5,0,5,5),
+          border: const OutlineInputBorder(
+            // borderSide:BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+
+        ),
+        onChanged:(value){onChangedFunc(value);},
+      ),
+    );
+  }
+}

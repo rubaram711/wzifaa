@@ -78,39 +78,52 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.06,
-                  child: Center(
-                    child: InkWell(
-                      onTap: () {
-                        showModalBottomSheet(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(30),
+                                ),
                               ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (context) =>
+                                  _buildBottomSheetForCountries(context));
+                        },
+                        child: Row(
+                          children: const [
+                            Icon(
+                              Icons.filter_alt,
+                              color: kThirdColor,
                             ),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            context: context,
-                            builder: (context) =>
-                                _buildBottomSheetForCountries(context));
-                      },
-                      child: Row(
-                        children: const [
-                          Icon(
-                            Icons.filter_alt,
-                            color: kThirdColor,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'وظائف حسب الدولة',
-                            style: TextStyle(
-                                color: kThirdColor,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'وظائف حسب الدولة',
+                              style: TextStyle(
+                                  color: kThirdColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                      InkWell(
+                        onTap: (){
+                          Navigator.pushNamed(context, '/search_for_job');
+                          // showSearch(context: context, delegate: MySearchDelegate());
+                        },
+                        child: const Icon(
+                          Icons.search,
+                          color: kThirdColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 isDataFetched

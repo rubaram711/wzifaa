@@ -18,8 +18,12 @@ class _Home2State extends State<Home2> {
   Widget currentScreen = const CarrerasByCountryPage();
   var currentTap = 0;
 
+
   @override
   Widget build(BuildContext context) {
+
+    bool isKeyboardShowing = MediaQuery.of(context).viewInsets.vertical > 0;
+
     return Scaffold(
       body: PageStorage(
         bucket: bucket,
@@ -27,7 +31,9 @@ class _Home2State extends State<Home2> {
       ),
       //backgroundColor: Colors.white.withOpacity(0.9),
       //backgroundColor: Colors.transparent,
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton:
+      isKeyboardShowing
+        ? const SizedBox():FloatingActionButton(
         backgroundColor: kSecondaryColor,
         onPressed: () {
           currentScreen = const CarrerasByCountryPage();
@@ -157,3 +163,7 @@ class _Home2State extends State<Home2> {
     );
   }
 }
+
+
+
+

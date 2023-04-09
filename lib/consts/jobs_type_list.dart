@@ -1,5 +1,5 @@
 
-List jobsTypeList=[
+List<String> jobsTypeList=[
   'دوام كامل',
   'دوام جزئي',
   'عقد',
