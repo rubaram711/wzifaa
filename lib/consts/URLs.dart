@@ -19,6 +19,9 @@ const kGetCountriesUrl = "https://wzifaa.com/wp-json/v1/countries/list/";
 const kGetCatsUrl = "https://wzifaa.com/wp-json/v1/cats/list/";
 
 
+const addCvUrl='https://wzifaa.com/wp-json/v1/users/redirectcv/';
+
+
 
 
 

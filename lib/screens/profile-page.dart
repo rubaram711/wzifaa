@@ -48,60 +48,60 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: const EdgeInsets.fromLTRB(15, 35, 15, 0),
               child:
                   Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Center(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      hasImage == false
-                          ? _imageFile == null
-                              ? CircleAvatar(
-                                  backgroundColor: kBgColor,
-                                  radius: 65,
-                                  child:Image.asset('assets/images/user_icon.png'))
-                              : CircleAvatar(
-                                  backgroundColor: kBgColor,
-                                  radius: 65,
-                                  child: ClipOval(
-                                      child: Image.file(
-                                    _imageFile!,
-                                    fit: BoxFit.cover,
-                                    height: 130,
-                                    width: 130,
-                                  )),
-                                )
-                          : CircleAvatar(
-                              backgroundColor: kBasicColor,
-                              radius: 65,
-                              child: ClipOval(
-                                  child: //Container(),
-                                      Image.asset(
-                                'assets/images/profile.jpg',
-                                fit: BoxFit.cover,
-                                height: 130,
-                                width: 130,
-                              )),
-                            ),
-                      Positioned(
-                        bottom: 3.0,
-                        left: 0.0,
-                        child: InkWell(
-                          onTap: () {
-                            goTOGallery();
-                          },
-                          child: CircleAvatar(
-                            radius: 16,
-                            backgroundColor: Colors.grey[600],
-                            child: const Icon(
-                              Icons.camera_alt,
-                              color: Colors.white,
-                              size: 20.0,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                // Center(
+                //   child: Stack(
+                //     alignment: Alignment.center,
+                //     children: [
+                //       hasImage == false
+                //           ? _imageFile == null
+                //               ? CircleAvatar(
+                //                   backgroundColor: kBgColor,
+                //                   radius: 65,
+                //                   child:Image.asset('assets/images/user_icon.png'))
+                //               : CircleAvatar(
+                //                   backgroundColor: kBgColor,
+                //                   radius: 65,
+                //                   child: ClipOval(
+                //                       child: Image.file(
+                //                     _imageFile!,
+                //                     fit: BoxFit.cover,
+                //                     height: 130,
+                //                     width: 130,
+                //                   )),
+                //                 )
+                //           : CircleAvatar(
+                //               backgroundColor: kBasicColor,
+                //               radius: 65,
+                //               child: ClipOval(
+                //                   child: //Container(),
+                //                       Image.asset(
+                //                 'assets/images/profile.jpg',
+                //                 fit: BoxFit.cover,
+                //                 height: 130,
+                //                 width: 130,
+                //               )),
+                //             ),
+                //       Positioned(
+                //         bottom: 3.0,
+                //         left: 0.0,
+                //         child: InkWell(
+                //           onTap: () {
+                //             goTOGallery();
+                //           },
+                //           child: CircleAvatar(
+                //             radius: 16,
+                //             backgroundColor: Colors.grey[600],
+                //             child: const Icon(
+                //               Icons.camera_alt,
+                //               color: Colors.white,
+                //               size: 20.0,
+                //             ),
+                //           ),
+                //         ),
+                //       )
+                //     ],
+                //   ),
+                // ),
                 const SizedBox(
                   height: 25,
                 ),

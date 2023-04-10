@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wazefaa/backend/save_user_info_locally.dart';
 import '../backend/get_user_by_id.dart';
+import '../consts/URLs.dart';
 import '../consts/colors.dart';
 import '../widgets/reusable_option_card.dart';
 import 'authentication/login_screen.dart';
@@ -171,8 +173,11 @@ class _MorePageState extends State<MorePage> {
                       ReusableOptionCard(
                         icon: Icons.add_card,
                         text: 'إضافة سيرة ذاتية',
-                        onTapFunction: () {
-                          //Navigator.pushNamed(context, '/add_cv');
+                        onTapFunction:  ()async{
+                          // await launchUrl(Uri.parse(infoMap['link']),);
+                          if (await canLaunch(addCvUrl)) {
+                            await launch( addCvUrl, universalLinksOnly: true, );
+                          } else { throw 'There was a problem to open the url: $addCvUrl'; }
                         },
                       ),
                       ReusableOptionCard(
