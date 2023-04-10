@@ -89,7 +89,6 @@ class _CompaniesPageState extends State<CompaniesPage> {
                     });
                   },
                   onPressSearchIcon: () {
-                    print(search);
                     setState(() {
                       companiesList=[];
                       isDataFetched=false;
@@ -152,7 +151,7 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                 rating: rating.substring(0, 1),
                                 review: review,
                                 content: content,
-                                logo: 'assets/images/logo_circle.png',
+                                logo: '',
                               );
                             }
                           }),

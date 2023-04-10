@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:wazefaa/consts/countries_list.dart';
+import 'package:wazefaa/widgets/reusable_alert.dart';
+import '../backend/get_countries_and_cats.dart';
 import '../backend/get_jobs.dart';
 import '../consts/colors.dart';
 import '../widgets/logo.dart';
 import '../widgets/reusable_career_card.dart';
-String countrySelected = '';
+
 class CarrerasByCountryPage extends StatefulWidget {
   const CarrerasByCountryPage({Key? key}) : super(key: key);
 
@@ -13,9 +14,10 @@ class CarrerasByCountryPage extends StatefulWidget {
 }
 
 class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
+  String countrySelected = '';
+  int selectedCountryIndex=0;
+  List<String> countriesList=[];
   List carrerasByCountryList = [];
-//todo:make carrerasByCountryList empty after choosing country
-
   int from = 0;
   int length = 10;
   bool isLoadMore = false;
@@ -53,8 +55,22 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
     });
   }
 
+
+  bool isCountriesFetched=false;
+  getCountriesForFilter() async{
+    countriesList= await getCountries();
+    setState(() {
+      isCountriesFetched=true;
+    });
+  }
+
   @override
   void initState() {
+    setState(() {
+      countrySelected = '';
+      selectedCountryIndex=0;
+      carrerasByCountryList = [];
+    });
     fetchData();
     super.initState();
   }
@@ -82,7 +98,9 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
-                        onTap: () {
+                        onTap: () async{
+                          // alert(context, 'انتظر قليلا من فضلك');
+                          await getCountriesForFilter();
                           showModalBottomSheet(
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
@@ -92,7 +110,7 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                               clipBehavior: Clip.antiAliasWithSaveLayer,
                               context: context,
                               builder: (context) =>
-                                  _buildBottomSheetForCountries(context));
+                                  _buildBottomSheetForCountries(context,isCountriesFetched));
                         },
                         child: Row(
                           children: const [
@@ -191,7 +209,7 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
     );
   }
 
-  SizedBox _buildBottomSheetForCountries(BuildContext context) {
+  SizedBox _buildBottomSheetForCountries(BuildContext context,bool isCountriesFetched) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.7,
       child: Directionality(
@@ -212,7 +230,7 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                 ),
               ),
             ),
-            Container(
+            isCountriesFetched? Container(
               margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
               height: MediaQuery.of(context).size.height * 0.45,
               child: ListView.builder(
@@ -226,17 +244,22 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                           color: kThirdColor,
                           fontWeight: FontWeight.bold),
                     ),
-                    value: countriesList[index],
-                    groupValue: countrySelected,
-                    onChanged: (value) {
+                    value: index,
+                    groupValue: selectedCountryIndex,
+                    onChanged: (value) async{
                       setState(() {
-                        countrySelected = value;
+                        selectedCountryIndex = value!;
+                        index=value;
+                        countrySelected=countriesList[selectedCountryIndex];
+                        carrerasByCountryList = [];
                       });
+                      await fetchData();
+                      Navigator.pop(context);
                     },
                   ),
                 ),
               ),
-            )
+            ) :const Center(child: CircularProgressIndicator())
           ],
         ),
       ),

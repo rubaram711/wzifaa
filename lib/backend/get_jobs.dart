@@ -20,8 +20,10 @@ Future getJobsByCountry(String country, int from, int length) async {
     body: jsonEncode(
         <String, dynamic>{'country': country, 'from': from, 'length': length}),
   );
-
-  var p = json.decode(response.body);
+  var p =[];
+  if (response.body.isNotEmpty) {
+    p = json.decode(response.body);
+  }
   return p;
 }
 

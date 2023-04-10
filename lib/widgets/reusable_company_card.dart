@@ -10,7 +10,6 @@ import 'package:share_plus/share_plus.dart';
 class ReusableCompanyCard extends StatelessWidget {
   const ReusableCompanyCard({
     Key? key,
-    //required this.infoMap,
     required this.isWeInDetailsPage,
     required this.id,
     required this.title,
@@ -21,7 +20,6 @@ class ReusableCompanyCard extends StatelessWidget {
     required this.content,
     required this.logo,
   }) : super(key: key);
-  // final Map<String, dynamic> infoMap;
   final bool isWeInDetailsPage;
   final String id;
   final String title;
@@ -90,10 +88,20 @@ class ReusableCompanyCard extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
+                    logo==''?const CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 32,
-                        child: Image.asset(logo)),
+                        child: CircleAvatar(
+                          backgroundColor:kBgColor,
+                          radius: 25,
+                          child: Center(child: Icon(Icons.business_center_rounded,color: Colors.grey,),),
+                        )
+                    )
+                        : CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 32,
+                        child: Image.asset(logo)
+                    ),
                     const SizedBox(
                       width: 15,
                     ),
