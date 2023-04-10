@@ -10,6 +10,8 @@ import '../../widgets/reusable_text_field.dart';
 import '../backend/save_user_info_locally.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'authentication/login_screen.dart';
+
 class AddJobPage extends StatefulWidget {
   const AddJobPage({Key? key}) : super(key: key);
 
@@ -217,7 +219,7 @@ class _AddJobPageState extends State<AddJobPage> {
                         text: 'إكمال تعبئة البيانات',
                         onPressButton: () async {
                           //todo :check from month field
-                           if(_monthExp!='الشهر'){
+                           if(_monthExp=='الشهر'){
                              alert(context, 'there is an error,please choose a month');
                            }
                            else if (_formKey.currentState!.validate()) {
@@ -225,20 +227,30 @@ class _AddJobPageState extends State<AddJobPage> {
                             String author = await getIdFromPref();
                             if(author==''){
                               // ignore: use_build_context_synchronously
-                              alert(context, 'there is an error,please login');
+                              alert(context, 'حدث خطأ, عليك إعادة تسجيل الدخول');
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginScreen()),
+                                      (Route<dynamic> route) => false);
                             }
                             else{
                             var response = await addJob(
                                 author, _title, _email, _content, _exp);
                             if(response=={"msg": "Access denied"}){
                               // ignore: use_build_context_synchronously
-                              alert(context, 'there is an error,please login');
+                              alert(context, 'حدث خطأ, عليك إعادة تسجيل الدخول');
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginScreen()),
+                                      (Route<dynamic> route) => false);
                             }
                             else{
                               int jobId=response['job_id'];
                               var kRedirectEditJobUrl = "https://wzifaa.com/wp-json/v1/jobs/redirect/?job_id=$jobId";
-                              if (await canLaunch(kRedirectEditJobUrl)) {
-                                await launch( kRedirectEditJobUrl, universalLinksOnly: true, );
+                              if (await canLaunchUrl(Uri.parse(kRedirectEditJobUrl))) {
+                                await launchUrl( Uri.parse(kRedirectEditJobUrl), mode: LaunchMode.externalApplication );
                               } else { throw 'There was a problem to open the url: $kRedirectEditJobUrl'; }
                             }
                           }}

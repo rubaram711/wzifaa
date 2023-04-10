@@ -10,8 +10,8 @@ class ReusableSocialMediaCard extends StatelessWidget {
     return InkWell(
       onTap: ()async{
        // await launchUrl(Uri.parse(infoMap['link']),);
-        if (await canLaunch(infoMap['link'])) {
-          await launch( infoMap['link'], universalLinksOnly: true, );
+        if (await canLaunchUrl(Uri.parse(infoMap['link']))) {
+          await launchUrl(Uri.parse(infoMap['link']),mode: LaunchMode.externalApplication );
         } else { throw 'There was a problem to open the url: ${infoMap['link']}'; }
       },
       child: Container(

@@ -1,11 +1,12 @@
-import 'dart:io';
+// import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import '../backend/update_user_info.dart';
 import '../consts/colors.dart';
 import '../widgets/reusable_alert.dart';
 import '../widgets/reusable_button.dart';
 import '../widgets/reusable_text_field.dart';
+import 'authentication/login_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -141,18 +142,32 @@ class _ProfilePageState extends State<ProfilePage> {
                 ReUsableButtonWithRoundedCorner(
                   text: 'حفظ',
                   onPressButton: () async {
-                    //{msg: updated}
-
                     _id = args['ID'];
+                    if(_username==''){setState(() {
+                      _username=args['user_name'];
+                    });}
+                     if(_email==''){setState(() {
+                      _email=args['user_email'];
+                    });}
+                     if(_phone==''){setState(() {
+                      _phone=args['user_phone'];
+                    });}
+
+                    print(_id);
                     var response =
                         await updateUserInfo(_id, _email, _username, _phone);
-                    if(response=={'msg': 'updated'}){
+                    if(response=={"msg":"Access denied"}){
                       // ignore: use_build_context_synchronously
-                      alert(context, 'تم التعديل بنجاح');
+                      alert(context, 'فشل التعديل عليك إعادة تسجيل الدخول');
+                      //ignore: use_build_context_synchronously
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                              (Route<dynamic> route) => false);
                     }
                     else{
                       // ignore: use_build_context_synchronously
-                      alert(context, 'فشل التعديل جرب إعادة تسجيل الدخول');
+                      alert(context, 'تم التعديل بنجاح');
                     }
                   },
                 )
@@ -164,18 +179,19 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  File? _imageFile;
-  final ImagePicker _picker = ImagePicker();
-  bool hasImage = false;
-  goTOGallery() async {
-    final pickedFile = await _picker.pickImage(
-      source: ImageSource.gallery,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        hasImage = false;
-        _imageFile = File(pickedFile.path);
-      });
-    }
-  }
+//   File? _imageFile;
+//   final ImagePicker _picker = ImagePicker();
+//   bool hasImage = false;
+//   goTOGallery() async {
+//     final pickedFile = await _picker.pickImage(
+//       source: ImageSource.gallery,
+//     );
+//     if (pickedFile != null) {
+//       setState(() {
+//         hasImage = false;
+//         _imageFile = File(pickedFile.path);
+//       });
+//     }
+//   }
+
 }

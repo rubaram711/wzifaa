@@ -25,9 +25,7 @@ class _SearchForJobState extends State<SearchForJob> {
   bool isCatSelected=false,isTypeSelected=false,isCountrySelected=false;
   ScrollController scrollController = ScrollController();
   fetchData() async {
-    print('cat ');
     var p = await getJobsByCCT(search, country, type, cat, from, length) ;
-    print('cat $p');
     carrerasBySearchList.addAll(p);
     scrollController.addListener(() async {
       if (isLoadMore) return;

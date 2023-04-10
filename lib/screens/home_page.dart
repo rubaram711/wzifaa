@@ -6,14 +6,14 @@ import 'package:wazefaa/screens/more_page.dart';
 import '../consts/colors.dart';
 import 'carreras_by_country.dart';
 
-class Home2 extends StatefulWidget {
-  const Home2({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<Home2> createState() => _Home2State();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _Home2State extends State<Home2> {
+class _HomePageState extends State<HomePage> {
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = const CarrerasByCountryPage();
   var currentTap = 0;

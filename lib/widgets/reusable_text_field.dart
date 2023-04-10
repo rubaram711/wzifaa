@@ -121,7 +121,7 @@ class ReusableTextFieldForProfile extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
           ),
-          onChanged:(value){onChangedFunc(value);},
+          onChanged:(value)=>onChangedFunc(value),
         ),
       ],
     );

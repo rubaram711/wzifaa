@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wazefaa/widgets/reusable_alert.dart';
 import '../backend/get_countries_and_cats.dart';
 import '../backend/get_jobs.dart';
 import '../consts/colors.dart';

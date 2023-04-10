@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wazefaa/backend/save_user_info_locally.dart';
 import 'package:wazefaa/consts/colors.dart';
 
 import '../widgets/logo.dart';
@@ -37,10 +38,19 @@ body: Container(
   }
 
   Future startAnimation() async{
+    String userId='';
     await Future.delayed(const Duration(milliseconds: 2000));
     setState(() {animate=true;});
+    String id=await getIdFromPref();
+    setState(() {
+      userId=id;
+    });
     await Future.delayed(const Duration(milliseconds: 1000));
     // ignore: use_build_context_synchronously
+    if(userId==''){
     Navigator.pushNamed(context, '/login');
+    } else{
+      Navigator.pushNamed(context, '/home');
+    }
   }
 }

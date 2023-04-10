@@ -6,6 +6,7 @@ import 'package:wazefaa/consts/URLs.dart';
 Future updateUserInfo(String id,String email, String username, String? phone) async {
   final uri = Uri.parse(kUpdateUserByIdUrl);
   String token=await getTokenFromPref();
+  print(token);
   var response = await http.post(
     uri,
     headers: {

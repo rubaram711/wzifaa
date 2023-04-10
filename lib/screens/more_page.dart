@@ -85,7 +85,7 @@ class _MorePageState extends State<MorePage> {
                             ))
                           : ClipOval(
                               child: Image.asset(
-                              'assets/images/profile.jpg',
+                              'assets/images/user_icon.png',
                               fit: BoxFit.cover,
                               height: 50,
                               width: 50,
@@ -175,8 +175,8 @@ class _MorePageState extends State<MorePage> {
                         text: 'إضافة سيرة ذاتية',
                         onTapFunction:  ()async{
                           // await launchUrl(Uri.parse(infoMap['link']),);
-                          if (await canLaunch(addCvUrl)) {
-                            await launch( addCvUrl, universalLinksOnly: true, );
+                          if (await canLaunchUrl(Uri.parse(addCvUrl))) {
+                            await launchUrl( Uri.parse(addCvUrl),mode: LaunchMode.externalApplication );
                           } else { throw 'There was a problem to open the url: $addCvUrl'; }
                         },
                       ),
