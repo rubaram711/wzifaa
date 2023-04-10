@@ -13,7 +13,7 @@ Future updateUserInfo(String id,String email, String username, String? phone) as
       'Authorization': 'Bearer $token',
     },
     body: jsonEncode(<String, dynamic>{
-      "ID": id,
+      "id": int.parse(id),
       "email":email,
       "username": username,
       "phone": phone
@@ -22,6 +22,6 @@ Future updateUserInfo(String id,String email, String username, String? phone) as
   print(token);
   print('id: $id,email:$email,username: $username,phone: $phone');
   var p = json.decode(response.body);
-  print(p);
+  print('pppppp $p');
   return p;
 }
