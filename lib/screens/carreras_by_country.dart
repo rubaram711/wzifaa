@@ -206,7 +206,7 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                                   company: companyName==''?'wzifaa':companyName,
                                   emailLink :emailLink,
                                   whatsappLink :whatsappLink,
-                                  phoneNumber:whatsappLink,
+                                  phoneNumber:phoneNumber,
                                   applicationLink:applicationLink,
                                   logo: '',
                                 );

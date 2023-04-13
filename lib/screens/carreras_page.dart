@@ -15,7 +15,6 @@ class CarrerasPage extends StatefulWidget {
 
 class _CarrerasPageState extends State<CarrerasPage> {
   List carrerasList = [];
-  //todo:make carrerasByCountryList empty after choosing country
 
   int from = 0;
   int length = 10;
@@ -191,7 +190,7 @@ class _CarrerasPageState extends State<CarrerasPage> {
                                   company: companyName==''?'wzifaa':companyName,
                                   emailLink :emailLink,
                                   whatsappLink :whatsappLink,
-                                  phoneNumber:whatsappLink,
+                                  phoneNumber:phoneNumber,
                                   applicationLink:applicationLink,
                                   logo: '',
                                 );

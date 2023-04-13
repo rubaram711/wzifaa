@@ -17,6 +17,7 @@ const kGetJobsByCountryUrl = "https://wzifaa.com/wp-json/v1/jobs/listbycountry/"
 const kGetJobsByCCTUrl = "https://wzifaa.com/wp-json/v1/jobs/listbycct/";
 const kGetCountriesUrl = "https://wzifaa.com/wp-json/v1/countries/list/";
 const kGetCatsUrl = "https://wzifaa.com/wp-json/v1/cats/list/";
+const kGetJobsByCompanyIdUrl="https://wzifaa.com/wp-json/v1/companies/listbycom/";
 
 
 const addCvUrl='https://wzifaa.com/wp-json/v1/users/redirectcv/';
