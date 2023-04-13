@@ -44,6 +44,10 @@ class _FavoriteJobsState extends State<FavoriteJobs> {
                 location: favJobsList[index]['location']??'',
                 views: favJobsList[index]['views']??'',
                 content: favJobsList[index]['content']??'',
+                emailLink :favJobsList[index]['emailLink'],
+                whatsappLink :favJobsList[index]['whatsappLink'],
+                phoneNumber:favJobsList[index]['phoneNumber'],
+                applicationLink:favJobsList[index]['applicationLink'],
                 logo: favJobsList[index]['logo']??'',
               );
             }),

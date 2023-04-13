@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../consts/colors.dart';
 
@@ -31,6 +32,14 @@ class BlogDetails extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(15,10,15,0),
             child:  Html(
               data: args!['content'],
+              onLinkTap: (url, _, __, ___) async {
+                if (await canLaunchUrl(Uri.parse(url!))) {
+                  await launchUrl(
+                      Uri.parse(url),
+                      mode: LaunchMode.externalApplication
+                  );
+                }
+              },
             ),
           ),
         ),

@@ -84,7 +84,7 @@ class ReusablePostCard extends StatelessWidget {
                     'id': id,
                     'title': title,
                     'authorName': authorName,
-                    'content': content,
+                    'content': content.replaceAll('\r\n', 'br'),
                   });
                 },
                 child: Container(

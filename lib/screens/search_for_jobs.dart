@@ -183,6 +183,7 @@ bool isCountriesAndCatsFetched=false;
                                     '';
                                 var companyName = '';
                                 var location = '', views = '';
+                                var emailLink ='', whatsappLink = '', phoneNumber = '',applicationLink='';
                                 for (int i = 0;
                                     i <
                                         carrerasBySearchList[index]['Array']
@@ -201,6 +202,18 @@ bool isCountriesAndCatsFetched=false;
                                     views = carrerasBySearchList[index]['Array']
                                             [i]['meta_value'] ??
                                         '';
+                                  }
+                                  if (carrerasBySearchList[index]['Array'][i]['meta_key'] == 'external-email') {
+                                    emailLink = carrerasBySearchList[index]['Array'][i]['meta_value']??'';
+                                  }
+                                  if (carrerasBySearchList[index]['Array'][i]['meta_key'] == '_jm_company_field__whatsapp') {
+                                    whatsappLink = carrerasBySearchList[index]['Array'][i]['meta_value']??'';
+                                  }
+                                  if (carrerasBySearchList[index]['Array'][i]['meta_key'] == '_jm_company_field__phone_number') {
+                                    phoneNumber = carrerasBySearchList[index]['Array'][i]['meta_value']??'';
+                                  }
+                                  if (carrerasBySearchList[index]['Array'][i]['meta_key'] == 'external-application-link') {
+                                    applicationLink = carrerasBySearchList[index]['Array'][i]['meta_value']??'';
                                   }
                                 }
                                 for (int i = 0;
@@ -225,7 +238,11 @@ bool isCountriesAndCatsFetched=false;
                                   location: location,
                                   views: views,
                                   content: content,
-                                  company: companyName,
+                                  company: companyName==''?'wzifaa':companyName,
+                                  emailLink :emailLink,
+                                  whatsappLink :whatsappLink,
+                                  phoneNumber:whatsappLink,
+                                  applicationLink:applicationLink,
                                   logo: '',
                                 );
                               }

@@ -76,7 +76,7 @@ class ReusableCompanyCard extends StatelessWidget {
                 'jobsCount': jobsCount,
                 'rating': rating,
                 'review': review,
-                'content': content,
+                'content': content.replaceAll('\r\n', 'br'),
                 'logo': logo
               });
             },
@@ -147,9 +147,7 @@ class ReusableCompanyCard extends StatelessWidget {
                         const SizedBox(
                           height: 7,
                         ),
-                        isWeInDetailsPage
-                            ? const SizedBox()
-                            : Row(
+                        Row(
                                 children: [
                                   Icon(
                                     Icons.cases_rounded,

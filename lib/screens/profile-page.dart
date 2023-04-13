@@ -1,13 +1,15 @@
 // import 'dart:io';
 import 'package:flutter/material.dart';
 // import 'package:image_picker/image_picker.dart';
+import '../backend/get_user_by_id.dart';
+import '../backend/save_user_info_locally.dart';
 import '../backend/update_user_info.dart';
 import '../consts/colors.dart';
 import '../widgets/reusable_alert.dart';
 import '../widgets/reusable_button.dart';
 import '../widgets/reusable_text_field.dart';
 import 'authentication/login_screen.dart';
-
+String name='';
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -21,10 +23,38 @@ class _ProfilePageState extends State<ProfilePage> {
   String _email = '';
   String _username = '';
   String? _phone = '';
+  String? id;
+  getInfoFromPref() async {
+    String id2 = await getIdFromPref();
+    setState(() {
+      id = id2;
+    });
+  }
+
+  Map profileInfoMap = {};
+  bool isUserInfoFetched = false;
+  bool showPageContent = false;
+  getUserInfo() async {
+    await getInfoFromPref();
+      Map p = await getUserById(id);
+      setState(() {
+        profileInfoMap = p;
+        isUserInfoFetched = true;
+      });
+    setState(() {
+      showPageContent = true;
+    });
+  }
+
+  @override
+  void initState() {
+    getUserInfo();
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic>? args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     return Scaffold(
       backgroundColor: kOfWhiteBgColor,
       appBar: AppBar(
@@ -40,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
-      body: Directionality(
+      body:showPageContent? Directionality(
         textDirection: TextDirection.rtl,
         child: Form(
           key:   _formKey,
@@ -107,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 25,
                 ),
                 ReusableTextFieldForProfile(
-                    hintText: args!['user_name'],
+                    hintText: profileInfoMap['user_name'],
                     onChangedFunc: (value) {
                       setState(() {
                         _username = value;
@@ -118,7 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 20,
                 ),
                 ReusableTextFieldForProfile(
-                    hintText: args['user_phone'].toString(),
+                    hintText: profileInfoMap['user_phone'].toString(),
                     onChangedFunc: (value) {
                       setState(() {
                         _phone = value.toString();
@@ -129,7 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 20,
                 ),
                 ReusableTextFieldForProfile(
-                    hintText: args['user_email'],
+                    hintText: profileInfoMap['user_email'],
                     onChangedFunc: (value) {
                       setState(() {
                         _email = value;
@@ -142,15 +172,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 ReUsableButtonWithRoundedCorner(
                   text: 'حفظ',
                   onPressButton: () async {
-                    _id = args['ID'];
+                    _id = profileInfoMap['ID'];
                     if(_username==''){setState(() {
-                      _username=args['user_name'];
+                      _username=profileInfoMap['user_name'];
                     });}
                      if(_email==''){setState(() {
-                      _email=args['user_email'];
+                      _email=profileInfoMap['user_email'];
                     });}
                      if(_phone==''){setState(() {
-                      _phone=args['user_phone'];
+                      _phone=profileInfoMap['user_phone'];
                     });}
 
                     print(_id);
@@ -168,6 +198,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     else{
                       // ignore: use_build_context_synchronously
                       alert(context, 'تم التعديل بنجاح');
+                      setState(() {
+                        name=_username;
+                      });
                     }
                   },
                 )
@@ -175,7 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         ),
-      ),
+      ) : Center(child: CircularProgressIndicator(),),
     );
   }
 

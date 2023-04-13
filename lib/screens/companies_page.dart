@@ -114,26 +114,15 @@ class _CompaniesPageState extends State<CompaniesPage> {
                               );
                             } else {
                               var id = companiesList[index]['ID'] ?? '';
-                              var title =
-                                  companiesList[index]['post_title'] ?? '';
+                              var title =companiesList[index]['post_title'] ?? '';
                               var date = companiesList[index]['post_date'] ?? '';
-                              var content =
-                                  companiesList[index]['post_content'] ?? '';
+                              var content = companiesList[index]['post_content'] ?? '';
                               var jobsCount = '', rating = '', review = '';
-                              for (int i = 0;
-                                  i < companiesList[index]['tags'].length;
-                                  i++) {
-                                if (companiesList[index]['tags'][i]['meta_key'] ==
-                                    '_noo_job_count') {
-                                  jobsCount = companiesList[index]['tags'][i]
-                                          ['meta_value'] ??
-                                      '';
-                                }
-                                if (companiesList[index]['tags'][i]['meta_key'] ==
-                                    '_noo_average_rating') {
-                                  rating = companiesList[index]['tags'][i]
-                                          ['meta_value'] ??
-                                      '';
+                              for (int i = 0; i < companiesList[index]['tags'].length; i++) {
+                                if (companiesList[index]['tags'][i]['meta_key'] =='_noo_job_count') {
+                                  jobsCount = companiesList[index]['tags'][i]['meta_value'] ??'';}
+                                if (companiesList[index]['tags'][i]['meta_key'] == '_noo_average_rating') {
+                                  rating = companiesList[index]['tags'][i]['meta_value'] ?? '';
                                 }
                                 if (companiesList[index]['tags'][i]['meta_key'] ==
                                     'total_review') {

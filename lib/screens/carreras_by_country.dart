@@ -163,8 +163,8 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                                 var content = carrerasByCountryList[index]
                                     ['post_content']??'';
                                 var postDate = carrerasByCountryList[index]['post_date']??'';
-                                var companyName ='';
-                                var location = '', views = '';
+                                var companyName ='',location = '', views = '';
+                                var emailLink ='', whatsappLink = '', phoneNumber = '',applicationLink='';
                                 for (int i = 0; i < carrerasByCountryList[index]['Array'].length; i++) {
                                   if (carrerasByCountryList[index]['Array'][i]['meta_key'] == 'custom-company-name') {
                                     companyName = carrerasByCountryList[index]['Array'][i]['meta_value']??'';
@@ -175,6 +175,18 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                                       '_noo_views_count') {
                                     views = carrerasByCountryList[index]
                                         ['Array'][i]['meta_value']??'';
+                                  }
+                                  if (carrerasByCountryList[index]['Array'][i]['meta_key'] == 'external-email') {
+                                    emailLink = carrerasByCountryList[index]['Array'][i]['meta_value']??'';
+                                  }
+                                  if (carrerasByCountryList[index]['Array'][i]['meta_key'] == '_jm_company_field__whatsapp') {
+                                    whatsappLink = carrerasByCountryList[index]['Array'][i]['meta_value']??'';
+                                  }
+                                  if (carrerasByCountryList[index]['Array'][i]['meta_key'] == '_jm_company_field__phone_number') {
+                                    phoneNumber = carrerasByCountryList[index]['Array'][i]['meta_value']??'';
+                                  }
+                                  if (carrerasByCountryList[index]['Array'][i]['meta_key'] == 'external-application-link') {
+                                    applicationLink = carrerasByCountryList[index]['Array'][i]['meta_value']??'';
                                   }
                                 }
                                 for (int i = 0; i < carrerasByCountryList[index]['tags'].length; i++) {
@@ -191,7 +203,11 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                                   location: location,
                                   views: views,
                                   content: content,
-                                  company: companyName,
+                                  company: companyName==''?'wzifaa':companyName,
+                                  emailLink :emailLink,
+                                  whatsappLink :whatsappLink,
+                                  phoneNumber:whatsappLink,
+                                  applicationLink:applicationLink,
                                   logo: '',
                                 );
                               }

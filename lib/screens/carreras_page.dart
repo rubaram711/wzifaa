@@ -153,14 +153,26 @@ class _CarrerasPageState extends State<CarrerasPage> {
                                 var title = carrerasList[index]['post_title']??'';
                                 var content = carrerasList[index]['post_content']??'';
                                 var postDate = carrerasList[index]['post_date']??'';
-                                var companyName ='';
-                                var location = '', views = '';
+                                var companyName ='', location = '', views = '';
+                                var emailLink ='', whatsappLink = '', phoneNumber = '',applicationLink='';
                                 for (int i = 0; i < carrerasList[index]['Array'].length; i++) {
                                   if (carrerasList[index]['Array'][i]['meta_key'] == 'custom-company-name') {
                                     companyName = carrerasList[index]['Array'][i]['meta_value']??'';
                                   }
                                   if (carrerasList[index]['Array'][i]['meta_key'] == '_noo_views_count') {
                                     views = carrerasList[index]['Array'][i]['meta_value']??'';
+                                  }
+                                  if (carrerasList[index]['Array'][i]['meta_key'] == 'external-email') {
+                                    emailLink = carrerasList[index]['Array'][i]['meta_value']??'';
+                                  }
+                                  if (carrerasList[index]['Array'][i]['meta_key'] == '_jm_company_field__whatsapp') {
+                                    whatsappLink = carrerasList[index]['Array'][i]['meta_value']??'';
+                                  }
+                                  if (carrerasList[index]['Array'][i]['meta_key'] == '_jm_company_field__phone_number') {
+                                    phoneNumber = carrerasList[index]['Array'][i]['meta_value']??'';
+                                  }
+                                  if (carrerasList[index]['Array'][i]['meta_key'] == 'external-application-link') {
+                                    applicationLink = carrerasList[index]['Array'][i]['meta_value']??'';
                                   }
                                 }
                                 for (int i = 0; i < carrerasList[index]['tags'].length; i++) {
@@ -176,7 +188,11 @@ class _CarrerasPageState extends State<CarrerasPage> {
                                   location: location,
                                   views: views,
                                   content: content,
-                                  company: companyName,
+                                  company: companyName==''?'wzifaa':companyName,
+                                  emailLink :emailLink,
+                                  whatsappLink :whatsappLink,
+                                  phoneNumber:whatsappLink,
+                                  applicationLink:applicationLink,
                                   logo: '',
                                 );
                               }

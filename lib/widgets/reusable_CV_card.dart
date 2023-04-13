@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wazefaa/consts/colors.dart';
 import 'package:wazefaa/widgets/reusable_alert.dart';
 import 'package:wazefaa/widgets/reusable_review_row.dart';
@@ -38,68 +39,76 @@ class ReusableCvCard extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 10,
+            height: 5,
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              image !=''
-                  ? CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 32,
-                  child:ClipOval(
-                      child: Image.asset(image,fit: BoxFit.cover,height: 64,width: 64,)
-                  ),)
-              : CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 32,
-                  child:  Image.asset('assets/images/user_icon.png')),
-              const SizedBox(width: 15,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: Text(
-                      userName,
-                      style: const TextStyle(color: kThirdColor, fontSize: 15,fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  Row(children: [
-                    Icon(Icons.cases_rounded,size: 17,color: Colors.grey[700],),
-                    const SizedBox(
-                      width: 5,
-                    ),
+          InkWell(
+            onTap: ()async{
+              // await launchUrl(Uri.parse(infoMap['link']),);
+              if (await canLaunchUrl(Uri.parse('https://wzifaa.com/candidates-cv/?page_id=$id'))) {
+                await launchUrl( Uri.parse('https://wzifaa.com/candidates-cv/?page_id=$id'),mode: LaunchMode.externalApplication );
+              } else { throw 'There was a problem to open the url: https://wzifaa.com/candidates-cv/?page_id=$id'; }
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                image !=''
+                    ? CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 32,
+                    child:ClipOval(
+                        child: Image.asset(image,fit: BoxFit.cover,height: 64,width: 64,)
+                    ),)
+                : CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 32,
+                    child:  Image.asset('assets/images/user_icon.png')),
+                const SizedBox(width: 15,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     SizedBox(
-                        width: MediaQuery.of(context).size.width*0.55,
-                        child: Text(title)),
-                  ],),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  Row(children: [
-                    Icon(Icons.location_on,size: 17,color: Colors.grey[700],),
-                    const SizedBox(
-                      width: 5,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: Text(
+                        userName,
+                        style: const TextStyle(color: kThirdColor, fontSize: 15,fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    Text(location),
-                  ],),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  Row(children: [
-                    Icon(Icons.calendar_month,size: 17,color: Colors.grey[700],),
                     const SizedBox(
-                      width: 5,
+                      height: 3,
                     ),
-                    Text(date.substring(0,10))
-                  ],)
-                ],
-              ),
-            ],
+                    Row(children: [
+                      Icon(Icons.cases_rounded,size: 17,color: Colors.grey[700],),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width*0.55,
+                          child: Text(title)),
+                    ],),
+                    const SizedBox(
+                      height: 3,
+                    ),
+                    Row(children: [
+                      Icon(Icons.location_on,size: 17,color: Colors.grey[700],),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(location),
+                    ],),
+                    const SizedBox(
+                      height: 3,
+                    ),
+                    Row(children: [
+                      Icon(Icons.calendar_month,size: 17,color: Colors.grey[700],),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(date.substring(0,10))
+                    ],)
+                  ],
+                ),
+              ],
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

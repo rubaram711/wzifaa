@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wazefaa/backend/save_user_info_locally.dart';
+import 'package:wazefaa/screens/profile-page.dart';
 import '../backend/get_user_by_id.dart';
 import '../consts/URLs.dart';
 import '../consts/colors.dart';
 import '../widgets/reusable_option_card.dart';
 import 'authentication/login_screen.dart';
 
+// String nameValue() {
+//   return name;
+// }
+// void setNameValue(String val){
+//   name=val;
+// }
 class MorePage extends StatefulWidget {
   const MorePage({Key? key}) : super(key: key);
 
@@ -38,6 +45,7 @@ class _MorePageState extends State<MorePage> {
       setState(() {
         profileInfoMap = p;
         isUserInfoFetched = true;
+        name=profileInfoMap['user_name'];
       });
     } else {
       setState(() {
@@ -104,7 +112,8 @@ class _MorePageState extends State<MorePage> {
                         isThisVisitor
                             ? const SizedBox()
                             : Text(
-                                profileInfoMap['user_name'],
+                                // profileInfoMap['user_name'],
+                                name==''? profileInfoMap['user_name']:name,
                                 style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 15,
@@ -144,14 +153,15 @@ class _MorePageState extends State<MorePage> {
                               text: 'الحساب الشخصي',
                               onTapFunction: () {
                                 Navigator.pushNamed(context, '/profile',
-                                    arguments: {
-                                      'user_name': profileInfoMap['user_name'],
-                                      'user_email':
-                                          profileInfoMap['user_email'],
-                                      'user_phone':
-                                          profileInfoMap['user_phone'] ?? '',
-                                      'ID': profileInfoMap['ID'],
-                                    });
+                                    // arguments: {
+                                    //   'user_name': profileInfoMap['user_name'],
+                                    //   'user_email':
+                                    //       profileInfoMap['user_email'],
+                                    //   'user_phone':
+                                    //       profileInfoMap['user_phone'] ?? '',
+                                    //   'ID': profileInfoMap['ID'],
+                                    // }
+                                    );
                               },
                             ),
                       ReusableOptionCard(

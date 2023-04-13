@@ -18,7 +18,8 @@ class _CVsPageState extends State<CVsPage> {
   int length = 10;
   bool isLoadMore = false;
   bool isDataFetched = false;
-  String search='';
+  bool isDataFinished = false;
+  String search = '';
   ScrollController scrollController = ScrollController();
   fetchData() async {
     var p = await getUsers(search, from, length);
@@ -31,7 +32,13 @@ class _CVsPageState extends State<CVsPage> {
           isLoadMore = true;
           from = from + length;
           p = await getUsers('', from, length);
-          cvsList.addAll(p);
+          if (p != null || p != []) {
+            cvsList.addAll(p);
+          } else {
+            setState(() {
+              isDataFinished = true;
+            });
+          }
           setState(() {
             isLoadMore = false;
           });
@@ -75,13 +82,13 @@ class _CVsPageState extends State<CVsPage> {
                   text: 'أدخل الكلمة المفتاحية التي تبحث عنها',
                   onChangedFunc: (value) {
                     setState(() {
-                      search=value;
+                      search = value;
                     });
                   },
                   onPressSearchIcon: () {
                     setState(() {
-                      cvsList=[];
-                      isDataFetched=false;
+                      cvsList = [];
+                      isDataFetched = false;
                     });
                     fetchData();
                   },
@@ -89,50 +96,73 @@ class _CVsPageState extends State<CVsPage> {
               ),
               isDataFetched
                   ? Container(
-                    margin: const EdgeInsets.only(top: 5),
-                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-                    height: MediaQuery.of(context).size.height*0.77,
-                    child: ListView.builder(
-                        controller: scrollController,
-                        itemCount: isLoadMore ? cvsList.length + 1 : cvsList.length,
-                        itemBuilder: (context, index) {
-                          if (index >= cvsList.length) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          } else {
-                            var id = '', title = '';
-                            id = cvsList[index]['ID'];
-                            title = cvsList[index]['post_title'];
-                            String date=cvsList[index]['post'][0]['post_date']??'';
-                            var userName = '';
-                            var location = '', review = '';
-                            for (int i = 0; i < cvsList[index]['usermeta'].length; i++) {
-                              if (cvsList[index]['usermeta'][i]['meta_user_key'] == 'nickname') {
-                                userName = cvsList[index]['usermeta'][i]['meta_user_value'];
-                              }
-                            }
-                            for (int i = 0; i < cvsList[index]['postmeta'].length; i++) {
-                              if (cvsList[index]['postmeta'][i]['meta_key'] == '_job_location') {
-                                location = cvsList[index]['postmeta'][i]['meta_value'];}
-                              if (cvsList[index]['postmeta'][i]['meta_key'] == '"_noo_views_count') {
-                                review =
-                                    cvsList[index]['postmeta'][i]['meta_value'];
-                              }
-                            }
+                      margin: const EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                      height: MediaQuery.of(context).size.height * 0.77,
+                      child: ListView.builder(
+                          controller: scrollController,
+                          itemCount:
+                              isLoadMore ? cvsList.length + 1 : cvsList.length,
+                          itemBuilder: (context, index) {
+                            if (index >= cvsList.length) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (isDataFinished) {
+                              return Container(
+                                  padding: const EdgeInsets.all(10),
+                                  child: const Text('no more CVs'));
+                            } else {
+                              var id = '', title = '', country = '';
+                              id = cvsList[index]['ID'];
+                              title = cvsList[index]['post_title'] ?? '';
 
-                            return ReusableCvCard(
-                              id: id,
-                              title: title,
-                              date:date,
-                              userName: userName,
-                              location: location,
-                              review: review,
-                              image: '',
-                            );
-                          }
-                        }),
-                  )
+                              if (cvsList[index]['country']!=null && cvsList[index]['country'].isNotEmpty) {
+                                country=cvsList[index]['country'][0]['country_name']??'';
+                              }
+                              String date =
+                                  cvsList[index]['post'][0]['post_date'] ?? '';
+                              var userName = '';
+                              var location = '', review = '';
+                              for (int i = 0;
+                                  i < cvsList[index]['usermeta'].length;
+                                  i++) {
+                                if (cvsList[index]['usermeta'][i]
+                                        ['meta_user_key'] ==
+                                    'nickname') {
+                                  userName = cvsList[index]['usermeta'][i]
+                                          ['meta_user_value'] ??
+                                      '';
+                                }
+                              }
+                              for (int i = 0;
+                                  i < cvsList[index]['postmeta'].length;
+                                  i++) {
+                                if (cvsList[index]['postmeta'][i]['meta_key'] ==
+                                    '_job_location') {
+                                  location = cvsList[index]['postmeta'][i]
+                                          ['meta_value'] ??
+                                      '';
+                                }
+                                if (cvsList[index]['postmeta'][i]['meta_key'] ==
+                                    '"_noo_views_count') {
+                                  review = cvsList[index]['postmeta'][i]
+                                          ['meta_value'] ??
+                                      '';
+                                }
+                              }
+                              return ReusableCvCard(
+                                id: id,
+                                title: title,
+                                date: date,
+                                userName: userName,
+                                location: country == '' ? location : country,
+                                review: review,
+                                image: '',
+                              );
+                            }
+                          }),
+                    )
                   : const Center(
                       child: CircularProgressIndicator(),
                     ),

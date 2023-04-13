@@ -18,7 +18,7 @@ class ReusableCareerCard extends StatelessWidget {
     required this.views,
     required this.content,
     required this.logo,
-    required this.company, required this.date,
+    required this.company, required this.date, required this.emailLink, required this.whatsappLink, required this.phoneNumber, required this.applicationLink,
   }) : super(key: key);
   final bool isWeInDetailsPage;
   final String id;
@@ -29,6 +29,10 @@ class ReusableCareerCard extends StatelessWidget {
   final String views;
   final String content;
   final String logo;
+  final String emailLink;
+  final String whatsappLink;
+  final String phoneNumber;
+  final String applicationLink;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,6 +56,10 @@ class ReusableCareerCard extends StatelessWidget {
                   'location': location,
                   'views': views,
                   'content': content,
+                  'emailLink' :emailLink,
+                  'whatsappLink' :whatsappLink,
+                  'phoneNumber' :phoneNumber,
+                  'applicationLink':applicationLink,
                   'logo': logo
                 });
                 alert(context, 'تم حفظ الوظيفة الى المفضلة');
@@ -75,7 +83,11 @@ class ReusableCareerCard extends StatelessWidget {
                 'company': company,
                 'location': location,
                 'views': views,
-                'content': content,
+                'content': content.replaceAll('\r\n', 'br'),
+                'emailLink' :emailLink,
+                'whatsappLink' :whatsappLink,
+                'phoneNumber' :phoneNumber,
+                'applicationLink':applicationLink,
                 'logo': logo
               });
             },
