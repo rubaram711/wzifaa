@@ -218,7 +218,6 @@ class _AddJobPageState extends State<AddJobPage> {
                     ReUsableButton(
                         text: 'إكمال تعبئة البيانات',
                         onPressButton: () async {
-                          //todo :check from month field
                            if(_monthExp=='الشهر'){
                              alert(context, 'there is an error,please choose a month');
                            }
@@ -331,51 +330,3 @@ class _AddJobPageState extends State<AddJobPage> {
   }
 }
 
-
-// Stack(
-//   alignment: Alignment.center,
-//   children: [
-//     Container(
-//       width:20,
-//       decoration: const ShapeDecoration(
-//         color: Colors.white,
-//         shape: RoundedRectangleBorder(
-//           side: BorderSide(width: 1.0, style: BorderStyle.solid,color: Colors.white),
-//           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-//         ),
-//       ),),
-//       SizedBox(
-//         width: 25,
-//         child: ButtonTheme(
-//           alignedDropdown: true,
-//           child: DropdownButton<String>(
-//             items: <String>[
-//               'Category 1',
-//               'Category 2',
-//               'Category 3',
-//               'Category 4'
-//             ].map((String value) {
-//               return DropdownMenuItem<String>(
-//                 value: value,
-//                 child: Text(value),
-//               );
-//             }).toList(),
-//             hint: Text(_monthExp.isEmpty
-//                 ? 'Category Food'
-//                 : _monthExp),
-//             borderRadius: BorderRadius.circular(10),
-//             underline: const SizedBox(),
-//             //isExpanded: true,
-//
-//             onChanged: (value) {
-//               if (value != null) {
-//                 setState(() {
-//                   _monthExp = value;
-//                 });
-//               }
-//             },
-//           ),
-//         ),
-//       ),
-//   ],
-// ),
