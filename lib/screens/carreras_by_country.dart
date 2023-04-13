@@ -23,6 +23,7 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
   bool isDataFetched = false;
   ScrollController scrollController = ScrollController();
   fetchData() async {
+    // ignore: prefer_typing_uninitialized_variables
     var p;
     if (countrySelected.isNotEmpty) {
       p = await getJobsByCountry(countrySelected, from, length);
@@ -269,6 +270,7 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                         carrerasByCountryList = [];
                       });
                       await fetchData();
+                      // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     },
                   ),

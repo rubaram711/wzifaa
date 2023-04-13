@@ -15,7 +15,6 @@ class CarrerasPage extends StatefulWidget {
 
 class _CarrerasPageState extends State<CarrerasPage> {
   List carrerasList = [];
-
   int from = 0;
   int length = 10;
   bool isLoadMore = false;
@@ -251,9 +250,9 @@ SizedBox _buildBottomSheetForCarreras(BuildContext context) {
                       selectedTypeIndex = value!;
                       typeSelected=jobsTypeList[selectedTypeIndex];
                       carrerasList=[];
-                      print(typeSelected);
                     });
                     await fetchData();
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   },
                 );
@@ -266,138 +265,4 @@ SizedBox _buildBottomSheetForCarreras(BuildContext context) {
   );
 }
 }
-//
-// class BuildBottomSheetForCarreras extends StatefulWidget {
-//   const BuildBottomSheetForCarreras({Key? key}) : super(key: key);
-//
-//   @override
-//   State<BuildBottomSheetForCarreras> createState() =>
-//       _BuildBottomSheetForCarrerasState();
-// }
-//
-// class _BuildBottomSheetForCarrerasState
-//     extends State<BuildBottomSheetForCarreras> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       height: MediaQuery.of(context).size.height * 0.4,
-//       child: Directionality(
-//         textDirection: TextDirection.rtl,
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Container(
-//               height: 60,
-//               color: Colors.white,
-//               child: const Center(
-//                 child: Text(
-//                   'اختر نوع الوظيفة',
-//                   style: TextStyle(
-//                       color: kThirdColor,
-//                       fontSize: 18,
-//                       fontWeight: FontWeight.bold),
-//                 ),
-//               ),
-//             ),
-//             Container(
-//               margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-//               height: MediaQuery.of(context).size.height * 0.29,
-//               child: SingleChildScrollView(
-//                 child: Column(
-//                   children: [
-//                     RadioListTile(
-//                       title: Text(
-//                         jobsTypeList[0],
-//                         style: const TextStyle(
-//                             fontSize: 14,
-//                             color: kThirdColor,
-//                             fontWeight: FontWeight.bold),
-//                       ),
-//                       value: jobsTypeList[0],
-//                       groupValue: typeSelected,
-//                       onChanged: (value) {
-//                         setState(() {
-//                           typeSelected = value!;
-//                           Navigator.pop(context);
-//                         });
-//                       },
-//                     ),
-//                     RadioListTile(
-//                       title: Text(
-//                         jobsTypeList[1],
-//                         style: const TextStyle(
-//                             fontSize: 14,
-//                             color: kThirdColor,
-//                             fontWeight: FontWeight.bold),
-//                       ),
-//                       value: jobsTypeList[1],
-//                       groupValue: typeSelected,
-//                       onChanged: (value) {
-//                         setState(() {
-//                           typeSelected = value!;
-//                           Navigator.pop(context);
-//                         });
-//                       },
-//                     ),
-//                     RadioListTile(
-//                       title: Text(
-//                         jobsTypeList[2],
-//                         style: const TextStyle(
-//                             fontSize: 14,
-//                             color: kThirdColor,
-//                             fontWeight: FontWeight.bold),
-//                       ),
-//                       value: jobsTypeList[2],
-//                       groupValue: typeSelected,
-//                       onChanged: (value) {
-//                         setState(() {
-//                           typeSelected = value!;
-//                           Navigator.pop(context);
-//                         });
-//                       },
-//                     ),
-//                     RadioListTile(
-//                       title: Text(
-//                         jobsTypeList[3],
-//                         style: const TextStyle(
-//                             fontSize: 14,
-//                             color: kThirdColor,
-//                             fontWeight: FontWeight.bold),
-//                       ),
-//                       value: jobsTypeList[3],
-//                       groupValue: typeSelected,
-//                       onChanged: (value) {
-//                         setState(() {
-//                           typeSelected = value!;
-//                           Navigator.pop(context);
-//                         });
-//                       },
-//                     ),
-//                     RadioListTile(
-//                       title: Text(
-//                         jobsTypeList[4],
-//                         style: const TextStyle(
-//                             fontSize: 14,
-//                             color: kThirdColor,
-//                             fontWeight: FontWeight.bold),
-//                       ),
-//                       value: jobsTypeList[4],
-//                       groupValue: typeSelected,
-//                       onChanged: (value) {
-//                         setState(() {
-//                           typeSelected = value!;
-//                           Navigator.pop(context);
-//                         });
-//                       },
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
+
