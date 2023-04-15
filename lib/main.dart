@@ -13,6 +13,7 @@ import 'package:wazefaa/screens/custom_splash_screen.dart';
 import 'package:wazefaa/screens/favorate_pages/favorite_page.dart';
 import 'package:wazefaa/screens/home_page.dart';
 import 'package:wazefaa/screens/profile-page.dart';
+import 'package:wazefaa/screens/radio.dart';
 import 'package:wazefaa/screens/search_for_jobs.dart';
 
 void main() {
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
           '/add_cv':(context)=>const AddCvPage(),
           '/favorite':(context)=>const  FavoritePage(),
           '/search_for_job':(context)=>const SearchForJob(),
+          '/radio':(context)=>const TheRadio(),
     },
         home: const SplashScreen());
   }

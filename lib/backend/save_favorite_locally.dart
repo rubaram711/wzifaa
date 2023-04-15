@@ -35,7 +35,6 @@ Future<void> addCVToSP(Map<String, dynamic> cv) async {
   final prefs = await SharedPreferences.getInstance();
   List<Map<String, dynamic>> favCVs = await getCVsFromSP() ?? [];
   favCVs.add(cv);
-  print(favCVs);
   prefs.setString('fav_CVs', jsonEncode(favCVs));
 }
 

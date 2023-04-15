@@ -76,7 +76,7 @@ class ReusableCompanyCard extends StatelessWidget {
                 'jobsCount': jobsCount,
                 'rating': rating,
                 'review': review,
-                'content': content.replaceAll('\r\n', 'br'),
+                'content': content.replaceAll('\r\n', '<br>'),
                 'logo': logo
               });
             },

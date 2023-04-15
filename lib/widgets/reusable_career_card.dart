@@ -83,7 +83,7 @@ class ReusableCareerCard extends StatelessWidget {
                 'company': company,
                 'location': location,
                 'views': views,
-                'content': content.replaceAll('\r\n', 'br'),
+                'content': content.replaceAll('\r\n', '<br>'),
                 'emailLink' :emailLink,
                 'whatsappLink' :whatsappLink,
                 'phoneNumber' :phoneNumber,

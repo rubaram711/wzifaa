@@ -131,15 +131,30 @@ class _CarrerasByCountryPageState extends State<CarrerasByCountryPage> {
                           ],
                         ),
                       ),
-                      InkWell(
-                        onTap: (){
-                          Navigator.pushNamed(context, '/search_for_job');
-                          // showSearch(context: context, delegate: MySearchDelegate());
-                        },
-                        child: const Icon(
-                          Icons.search,
-                          color: kThirdColor,
-                        ),
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: (){
+                              Navigator.pushNamed(context, '/radio');
+                              // showSearch(context: context, delegate: MySearchDelegate());
+                            },
+                            child: const Icon(
+                              Icons.radio,
+                              color: kThirdColor,
+                            ),
+                          ),
+                          const SizedBox(width: 10,),
+                          InkWell(
+                            onTap: (){
+                              Navigator.pushNamed(context, '/search_for_job');
+                              // showSearch(context: context, delegate: MySearchDelegate());
+                            },
+                            child: const Icon(
+                              Icons.search,
+                              color: kThirdColor,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

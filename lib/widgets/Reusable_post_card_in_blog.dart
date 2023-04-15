@@ -74,7 +74,6 @@ class ReusablePostCard extends StatelessWidget {
             height: 5,
           ),
           Divider(color: Colors.grey.withOpacity(0.5),),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -84,7 +83,7 @@ class ReusablePostCard extends StatelessWidget {
                     'id': id,
                     'title': title,
                     'authorName': authorName,
-                    'content': content.replaceAll('\r\n', 'br'),
+                    'content': content.replaceAll('\r\n', '<br>'),
                   });
                 },
                 child: Container(
